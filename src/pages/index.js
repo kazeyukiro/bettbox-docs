@@ -993,15 +993,34 @@ export default function Home() {
 
   useEffect(() => {
     let alive = true;
-    fetch(`${REPO_API}/releases?per_page=30`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((data) => {
-        if (alive && Array.isArray(data) && data.length > 0) setReleases(data);
-      })
-      .catch(() => {})
-      .finally(() => {
-        if (alive) setLoading(false);
-      });
+    const load = async () => {
+      // 1) 优先读取构建时预抓取的本地静态数据（同源，无 CORS / 限流问题）
+      try {
+        const res = await fetch('/releases.json', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (alive && Array.isArray(data) && data.length > 0) {
+            setReleases(data);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (_) {
+        /* 本地文件缺失时回退到运行时 API */
+      }
+      // 2) 兜底：运行时直接请求 GitHub API
+      try {
+        const res = await fetch(`${REPO_API}/releases?per_page=30`);
+        if (res.ok) {
+          const data = await res.json();
+          if (alive && Array.isArray(data) && data.length > 0) setReleases(data);
+        }
+      } catch (_) {
+        /* 忽略，保持失败兜底 UI */
+      }
+      if (alive) setLoading(false);
+    };
+    load();
     return () => {
       alive = false;
     };

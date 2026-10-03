@@ -19,7 +19,7 @@ Bettbox 的所有安装包均在 [GitHub Releases](https://github.com/appshubcc/
 | 平台 | 系统要求 | 推荐包 | 兼容提示 |
 | :--- | :--- | :--- | :--- |
 | **Android** | 8.0+ | `Bettbox-Android-universal-*.apk` | 低内存设备选 ARMv7 32 位 |
-| **Android TV** | 已适配 | TV 专用 APK | 低内存设备选 ARMv7 |
+| **Android TV** | 已适配 | 与手机共用 Android APK（无独立 TV 版） | 低内存设备选 ARMv7 |
 | **Windows** | 8.1+ | `Bettbox-windows-x64-setup.exe` | 旧 CPU 用 `*-compatible-*` |
 | **macOS** | 10.15+ | `Bettbox-macos-*.dmg` | Intel / Apple Silicon 分开 |
 | **Linux** | Kernel 5.4+ | `.AppImage` / `.deb` / `.rpm` | 旧 CPU 用兼容版 |

@@ -29,7 +29,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 | 平台 | 系统要求 | 架构 |
 | :--- | :--- | :--- |
 | **Android** | 8.0+ | ARMv8 / ARMv7 / x86_64 / Universal |
-| **Android TV** | 已完整适配 | 低内存设备可选 ARMv7 32 位 |
+| **Android TV** | 已适配（共用 Android APK，无独立 TV 版） | 低内存设备可选 ARMv7 32 位 |
 | **Windows** | 8.1+ | x64 / arm64（旧 CPU 请用 Compatible 版） |
 | **macOS** | 10.15+ | Intel / Apple Silicon |
 | **Linux** | Kernel 5.4+ | x64 / arm64（旧 CPU 请用 Compatible 版） |

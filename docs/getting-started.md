@@ -93,5 +93,5 @@ Bettbox 提供多种导入方式，最推荐 **URL 自动同步**。
 | 管理/自动更新订阅、WebDAV 备份 | [配置订阅指南](/docs/guide/config) |
 | 理解代理组、测速、TUN、规则 | [节点与代理组](/docs/guide/proxies) |
 | 让某 App 走代理、某 App 直连 | [应用分流](/docs/guide/apps) |
-| 更换主题/图标、用首页小组件 | [小组件与个性化](/docs/guide/widgets) |
+| 更换主题/图标、用 APP首页实时网速小组件 | [小组件与个性化](/docs/guide/widgets) |
 | 排障安装/权限/订阅问题 | [常见问题](/docs/faq) |

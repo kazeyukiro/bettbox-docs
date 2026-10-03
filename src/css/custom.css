@@ -1,30 +1,46 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Global theme overrides — soft neutral palette inspired by FlClash landing.
  */
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #5c6b5a;
+  --ifm-color-primary-dark: #515e4f;
+  --ifm-color-primary-darker: #4c594a;
+  --ifm-color-primary-darkest: #3f493d;
+  --ifm-color-primary-light: #677865;
+  --ifm-color-primary-lighter: #6c7d6a;
+  --ifm-color-primary-lightest: #7d8e7b;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-background-color: #faf8f5;
+  --ifm-navbar-background-color: rgba(250, 248, 245, 0.92);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
+  --ifm-font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #a8b89a;
+  --ifm-color-primary-dark: #97a989;
+  --ifm-color-primary-darker: #8fa281;
+  --ifm-color-primary-darkest: #76856a;
+  --ifm-color-primary-light: #b9c7ab;
+  --ifm-color-primary-lighter: #c1ceb3;
+  --ifm-color-primary-lightest: #d4ddca;
+  --ifm-background-color: #121115;
+  --ifm-navbar-background-color: rgba(18, 17, 21, 0.92);
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.08);
+}
+
+.navbar {
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: none;
+}
+
+[data-theme='dark'] .navbar {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.footer {
+  background: #1a191d;
 }

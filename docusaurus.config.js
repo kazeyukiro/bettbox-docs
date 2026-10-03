@@ -9,26 +9,18 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Bettbox',
-  tagline: 'Another Better Mihomo Client',
+  tagline: 'Another Better Mihomo Client — 更好的体验，亦开箱可用',
   favicon: 'img/favicon.png',
 
-  // Set the production url of your site here
   url: 'https://www.bettbox.dpdns.org',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'appshub', // Usually your GitHub org/user name.
-  projectName: 'Bettbox', // Usually your repo name.
+  organizationName: 'kazeyukiro',
+  projectName: 'bettbox-docs',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'zh-Hans',
     locales: ['zh-Hans'],
@@ -41,10 +33,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/dzx941/bettbox-docs/tree/main/',
+          editUrl: 'https://github.com/kazeyukiro/bettbox-docs/tree/main/',
         },
         blog: {
           showReadingTime: true,
@@ -52,11 +41,7 @@ const config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/dzx941/bettbox-docs/blob/main/',
-          // Useful options to enforce blogging best practices
+          editUrl: 'https://github.com/kazeyukiro/bettbox-docs/blob/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -71,8 +56,15 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/logo.jpg',
+      metadata: [
+        {
+          name: 'description',
+          content:
+            'Bettbox 是基于 Mihomo（Clash Meta）内核的多平台代理客户端，支持 Android、Windows、macOS、Linux。开箱即用、前台流畅、后台省电。',
+        },
+        {name: 'keywords', content: 'Bettbox, Mihomo, Clash Meta, 代理, 客户端'},
+      ],
       navbar: {
         title: 'Bettbox',
         logo: {
@@ -81,12 +73,22 @@ const config = {
         },
         items: [
           {
+            to: '/#download',
+            label: '下载',
+            position: 'left',
+          },
+          {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial',
+            label: '文档',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/blog', label: '博客', position: 'left'},
+          {
+            href: 'https://github.com/appshubcc/Bettbox/releases',
+            label: '更新日志',
+            position: 'left',
+          },
           {
             href: 'https://github.com/appshubcc/Bettbox',
             label: 'GitHub',
@@ -98,46 +100,50 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: '文档',
             items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
+              {label: '快速开始', to: '/docs/getting-started'},
+              {label: '功能指南', to: '/docs/guide'},
+              {label: '常见问题', to: '/docs/faq'},
             ],
           },
           {
-            title: 'Community',
+            title: '社区',
             items: [
               {
-                label: 'Telegran Channel',
+                label: 'Telegram 频道',
                 href: 'https://t.me/appshub_channel',
               },
               {
-                label: 'Telegram Chat',
+                label: 'Telegram 交流群',
                 href: 'https://t.me/appshub_chat',
               },
             ],
           },
           {
-            title: 'More',
+            title: '更多',
             items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
+              {label: '博客', to: '/blog'},
               {
                 label: 'GitHub',
                 href: 'https://github.com/appshubcc/Bettbox',
               },
+              {
+                label: 'Releases',
+                href: 'https://github.com/appshubcc/Bettbox/releases',
+              },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Bettbox Docs. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Bettbox. GPL-3.0 · Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+      },
+      colorMode: {
+        defaultMode: 'light',
+        respectPrefersColorScheme: true,
       },
     }),
 };

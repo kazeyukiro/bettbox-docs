@@ -199,7 +199,7 @@ const FEATURES = [
   {title: '个性化定制', desc: '丰富的色彩主题、自定义图标/标题，甚至包含 30 种精美测速动画。'},
   {title: '脚本 UI 适配', desc: '首个支持 JS 覆写脚本可用的分流 UI 适配与自定义可视化便捷开关。'},
   {title: '专业编辑', desc: '多平台内置高性能重构版 code-forge 编辑器，媲美专业级编辑器体验。'},
-  {title: '首页小组件', desc: '内置多款设计精良的 Widget 小组件，直观掌控实时网速与全局运行状态。'},
+  {title: 'APP首页实时网速小组件', desc: '内置多款设计精良的 Widget 小组件，在 APP 首页直观掌控实时网速与全局运行状态。'},
   {title: '设备兼容', desc: '持续维护面向旧系统与老旧硬件的 Compatible 兼容版本，延长设备使用周期。'},
   {title: '零隐私风险', desc: '开源、无广告，全透明 CI/CD 流程接受全方位审计，杜绝任何后台隐私收集。'},
   {title: '社区导向', desc: '认真评估社区反馈，优先对待高质量 Issue，你的声音不会无故被淹没。'},
@@ -417,7 +417,7 @@ function AppMock() {
         <span className={styles.mockWidgetBar} />
         <div>
           <div className={styles.mockWidgetSpeed}>45.2 MB/s</div>
-          <div className={styles.mockWidgetSub}>实时网速小组件</div>
+          <div className={styles.mockWidgetSub}>APP首页实时网速小组件</div>
         </div>
       </div>
     </div>

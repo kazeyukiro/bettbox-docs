@@ -1,15 +1,23 @@
 name: Deploy Docusaurus
 
+# 触发条件：
+#  - push 到 main：每次提交自动重建并刷新更新日志后部署
+#  - schedule：每日定时重建（拉取 Bettbox 最新 Releases，自动刷新更新日志）
+#  - workflow_dispatch：可在 Actions 页面手动点「Run workflow」按需强制刷新
 on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 避免并发部署互相覆盖
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -17,30 +25,38 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    # GITHUB_TOKEN 注入后，构建时的 prebuild 会以「已认证」身份拉取 Releases，
+    # 速率限额从 60 次/小时 提升到 5000 次/小时，确保更新日志每次都能刷新。
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - run: npm ci
-      - run: npm run build
+      - name: Install dependencies
+        run: npm ci
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Build
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: build
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

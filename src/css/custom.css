@@ -1,46 +1,452 @@
 /**
- * Global theme overrides — soft neutral palette inspired by FlClash landing.
+ * Bettbox Docs — 全局设计系统
+ * 设计语言参考 FlClash 官网：暖纸色背景、深藏青点缀、
+ * 大量 spring 缓滚动效、亮/暗双主题。
  */
 
 :root {
-  --ifm-color-primary: #5c6b5a;
-  --ifm-color-primary-dark: #515e4f;
-  --ifm-color-primary-darker: #4c594a;
-  --ifm-color-primary-darkest: #3f493d;
-  --ifm-color-primary-light: #677865;
-  --ifm-color-primary-lighter: #6c7d6a;
-  --ifm-color-primary-lightest: #7d8e7b;
-  --ifm-code-font-size: 95%;
-  --ifm-background-color: #faf8f5;
-  --ifm-navbar-background-color: rgba(250, 248, 245, 0.92);
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
-  --ifm-font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC',
-    'Microsoft YaHei', sans-serif;
+  /* -------- 基础色板 -------- */
+  --pa-bg: #f3efea;
+  --pa-surface: #fbf9f6;
+  --pa-raise: #e9e3dc;
+  --pa-chip: #fbf9f6;
+  --pa-ink: #26242b;
+  --pa-ink-2: #5c575f;
+  --pa-ink-3: #8a8390;
+  --pa-line: rgb(38 36 43 / 0.1);
+  --pa-line-strong: rgb(38 36 43 / 0.18);
+  --pa-accent: #454e75;
+  --pa-accent-strong: #38406b;
+  --pa-accent-soft: rgb(69 78 117 / 0.12);
+  --pa-on-accent: #f6f4f0;
+
+  /* 品牌三色条（导航/页脚 Logo 用） */
+  --pa-g1: #454e75;
+  --pa-g2: #7b84ad;
+  --pa-g3: #b08d6a;
+
+  /* 语义色（更新日志等） */
+  --pa-feat: #74876c;
+  --pa-fix: #677d91;
+  --pa-perf: #b08568;
+  --pa-breaking: #ad5d57;
+  --pa-revert: #8c8284;
+
+  --pa-rose: #c3a1a8;
+  --pa-clay: #cdab95;
+  --pa-oat: #d9ccb8;
+  --pa-sage: #a2b09b;
+  --pa-slate: #98a9b8;
+  --pa-lilac: #aca4c1;
+
+  /* -------- Docusaurus 变量映射 -------- */
+  --ifm-color-primary: #454e75;
+  --ifm-color-primary-dark: #3c4466;
+  --ifm-color-primary-darker: #384060;
+  --ifm-color-primary-darkest: #2e3550;
+  --ifm-color-primary-light: #575f88;
+  --ifm-color-primary-lighter: #5f6790;
+  --ifm-color-primary-lightest: #767da2;
+  --ifm-background-color: #f3efea;
+  --ifm-background-surface-color: #fbf9f6;
+  --ifm-font-color-base: #26242b;
+  --ifm-font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto,
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --ifm-font-family-monospace: 'SF Mono', 'Cascadia Code', 'JetBrains Mono',
+    Consolas, 'Liberation Mono', monospace;
+  --ifm-heading-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI',
+    'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --ifm-code-font-size: 92%;
+  --ifm-navbar-background-color: transparent;
+  --ifm-navbar-height: 60px;
+  --ifm-line-height-base: 1.65;
+  --ifm-global-radius: 14px;
+  --ifm-footer-background-color: #211e26;
+  --ifm-footer-link-color: #b9b2c0;
+  --ifm-footer-title-color: #ebe5e2;
+  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 0.1);
+
+  /* 缓动 */
+  --pa-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --pa-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --pa-spring-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* 圆角 */
+  --pa-r-sm: 10px;
+  --pa-r-md: 16px;
+  --pa-r-lg: 24px;
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #a8b89a;
-  --ifm-color-primary-dark: #97a989;
-  --ifm-color-primary-darker: #8fa281;
-  --ifm-color-primary-darkest: #76856a;
-  --ifm-color-primary-light: #b9c7ab;
-  --ifm-color-primary-lighter: #c1ceb3;
-  --ifm-color-primary-lightest: #d4ddca;
-  --ifm-background-color: #121115;
-  --ifm-navbar-background-color: rgba(18, 17, 21, 0.92);
-  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.08);
+  --pa-bg: #16151a;
+  --pa-surface: #201e25;
+  --pa-raise: #2b2830;
+  --pa-chip: #37333e;
+  --pa-ink: #ebe5e2;
+  --pa-ink-2: #b3abb5;
+  --pa-ink-3: #837c88;
+  --pa-line: rgb(235 229 226 / 0.09);
+  --pa-line-strong: rgb(235 229 226 / 0.17);
+  --pa-accent: #c0c6e4;
+  --pa-accent-strong: #d6daef;
+  --pa-accent-soft: rgb(192 198 228 / 0.14);
+  --pa-on-accent: #1c1a22;
+
+  --pa-g1: #8b93bd;
+  --pa-g2: #6a719c;
+  --pa-g3: #c8a184;
+
+  --pa-feat: #a9bb9f;
+  --pa-fix: #9fb3c5;
+  --pa-perf: #d9b093;
+  --pa-breaking: #e08d85;
+  --pa-revert: #978d8d;
+
+  --ifm-color-primary: #aab1d8;
+  --ifm-color-primary-dark: #9aa0cb;
+  --ifm-color-primary-darker: #9297c4;
+  --ifm-color-primary-darkest: #7a80ac;
+  --ifm-color-primary-light: #bcc2e2;
+  --ifm-color-primary-lighter: #c4c9e6;
+  --ifm-color-primary-lightest: #d6daf0;
+  --ifm-background-color: #16151a;
+  --ifm-background-surface-color: #201e25;
+  --ifm-font-color-base: #ebe5e2;
+  --ifm-navbar-background-color: transparent;
+  --ifm-footer-background-color: #131217;
+  --ifm-footer-link-color: #b9b2c0;
+  --ifm-footer-title-color: #ebe5e2;
+  --docusaurus-highlighted-code-line-bg: rgb(255 255 255 / 0.12);
 }
+
+/* ---------- 全局基础 ---------- */
+
+html {
+  scroll-padding-top: calc(var(--ifm-navbar-height) + 16px);
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--pa-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--pa-accent) 26%, transparent);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--ifm-heading-font-family);
+  letter-spacing: -0.02em;
+}
+
+/* ---------- 导航栏 ---------- */
 
 .navbar {
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: color-mix(in srgb, var(--pa-bg) 78%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
   box-shadow: none;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-[data-theme='dark'] .navbar {
-  border-bottom-color: rgba(255, 255, 255, 0.06);
+.navbar--scrolled {
+  background: color-mix(in srgb, var(--pa-bg) 92%, transparent);
+  border-bottom-color: var(--pa-line);
 }
+
+.navbar__inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+
+.navbar__title {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--pa-ink);
+}
+
+.navbar__logo {
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  transition: transform 0.6s var(--pa-spring-pop);
+}
+
+.navbar__brand:hover .navbar__logo {
+  transform: rotate(-12deg) scale(1.06);
+}
+
+.navbar__link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--pa-ink-2);
+  border-radius: var(--pa-r-sm);
+  padding: 0.4rem 0.7rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: var(--pa-ink);
+}
+
+.navbar__link:hover {
+  background: var(--pa-raise);
+}
+
+.navbar__item.dropdown .navbar__link {
+  background: transparent;
+}
+
+/* 主题切换按钮：旋转动效 */
+[class*='colorModeToggle'] button,
+[class*='toggle_'] {
+  transition: transform 0.7s var(--pa-spring-pop);
+}
+
+[class*='colorModeToggle'] button:hover {
+  transform: rotate(24deg) scale(1.06);
+}
+
+/* GitHub 图标项 */
+.navbar-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--pa-r-sm);
+  color: var(--pa-ink-2);
+  transition: color 0.2s, background-color 0.2s, transform 0.5s var(--pa-spring-pop);
+}
+
+.navbar-icon-link:hover {
+  color: var(--pa-ink);
+  background: var(--pa-raise);
+  transform: translateY(-1px);
+}
+
+/* ---------- 侧边栏（文档页） ---------- */
+
+.theme-doc-sidebar-container {
+  border-right-color: var(--pa-line) !important;
+}
+
+.menu__link {
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background-color 0.18s ease, color 0.18s ease, padding-left 0.25s var(--pa-spring);
+}
+
+.menu__link:hover {
+  background: var(--pa-raise);
+  color: var(--pa-ink);
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: var(--pa-accent-soft);
+  color: var(--pa-accent-strong);
+}
+
+[data-theme='dark'] .menu__link--active:not(.menu__link--sublist) {
+  color: var(--pa-accent);
+}
+
+.table-of-contents__link:hover,
+.table-of-contents__link--active {
+  color: var(--pa-accent-strong);
+}
+
+[data-theme='dark'] .table-of-contents__link:hover,
+[data-theme='dark'] .table-of-contents__link--active {
+  color: var(--pa-accent);
+}
+
+/* ---------- 正文排版（文档/博客） ---------- */
+
+.markdown h1,
+.markdown h2 {
+  letter-spacing: -0.03em;
+}
+
+.markdown a {
+  color: var(--pa-accent-strong);
+  text-decoration-color: color-mix(in srgb, var(--pa-accent) 40%, transparent);
+  text-underline-offset: 3px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+[data-theme='dark'] .markdown a {
+  color: var(--pa-accent);
+}
+
+.markdown a:hover {
+  color: var(--pa-accent-strong);
+  text-decoration-color: currentColor;
+}
+
+.markdown table {
+  border-radius: var(--pa-r-sm);
+  overflow: hidden;
+  border: 1px solid var(--pa-line);
+}
+
+.markdown table tr {
+  background: var(--pa-surface);
+}
+
+.markdown table th,
+.markdown table td {
+  border-color: var(--pa-line);
+}
+
+.markdown code {
+  border: 1px solid var(--pa-line);
+  background: var(--pa-raise);
+  border-radius: 6px;
+  padding: 0.15em 0.4em;
+}
+
+.markdown pre {
+  border-radius: var(--pa-r-md);
+  border: 1px solid var(--pa-line);
+  box-shadow: 0 8px 24px rgb(20 16 28 / 0.06);
+}
+
+blockquote {
+  border-left: 3px solid var(--pa-accent);
+  background: var(--pa-accent-soft);
+  border-radius: 0 var(--pa-r-sm) var(--pa-r-sm) 0;
+  color: var(--pa-ink-2);
+}
+
+/* ---------- 页脚 ---------- */
 
 .footer {
-  background: #1a191d;
+  border-top: 1px solid var(--pa-line);
+  background: var(--pa-surface);
+}
+
+.footer .footer__title {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pa-ink-3);
+}
+
+.footer__link-item {
+  transition: color 0.2s;
+}
+
+.footer__link-item:hover {
+  color: var(--pa-accent-strong);
+}
+
+[data-theme='dark'] .footer__link-item:hover {
+  color: var(--pa-accent);
+}
+
+.footer__copyright {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* ---------- 滚动条 ---------- */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--pa-ink-3) 40%, transparent);
+  border-radius: 99px;
+  border: 2px solid var(--pa-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--pa-ink-3) 65%, transparent);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------- 滚动揭示动画（Reveal 组件） ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.8s var(--pa-spring), transform 0.8s var(--pa-spring);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.reveal.reveal--in {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal--scale {
+  transform: translateY(14px) scale(0.975);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- 通用工具 ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* 阅读进度条（挂载于导航栏底部） */
+.nav-progress {
+  position: fixed;
+  top: var(--ifm-navbar-height);
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: calc(var(--ifm-z-index-fixed) + 1);
+  background: linear-gradient(90deg, var(--pa-g1), var(--pa-g2) 55%, var(--pa-g3));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+.pa-container {
+  width: 100%;
+  max-width: calc(1160px + 2 * clamp(16px, 4vw, 40px));
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+
+@media (max-width: 996px) {
+  .navbar__inner {
+    padding-inline: 12px;
+  }
 }

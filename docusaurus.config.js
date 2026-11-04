@@ -8,7 +8,7 @@ const GITHUB_URL = 'https://github.com/appshubcc/Bettbox';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Bettbox',
-  tagline: 'Another Better Mihomo Client — 更好的体验，亦开箱可用',
+  tagline: 'Another Better Network Toolbox — 更好的网络工具箱',
   favicon: 'img/favicon.png',
 
   url: 'https://www.bettbox.dpdns.org',
@@ -60,9 +60,9 @@ const config = {
         {
           name: 'description',
           content:
-            'Bettbox 是基于 Mihomo（Clash Meta）内核的多平台代理客户端，支持 Android、Windows、macOS、Linux。开箱即用、前台流畅、后台省电。',
+            'Bettbox 是基于 Mihomo（Clash Meta）内核的多平台网络分流与 DNS 调试工具，支持 Android、Windows、macOS、Linux。开箱即用、前台流畅、后台省电。',
         },
-        {name: 'keywords', content: 'Bettbox, Mihomo, Clash Meta, 代理, 客户端, 下载'},
+        {name: 'keywords', content: 'Bettbox, Mihomo, Clash Meta, 网络分流, DNS 调试, 工具箱, 下载'},
         {name: 'theme-color', content: '#f3efea', media: '(prefers-color-scheme: light)'},
         {name: 'theme-color', content: '#16151a', media: '(prefers-color-scheme: dark)'},
       ],
@@ -122,6 +122,8 @@ const config = {
             items: [
               {label: '快速开始', to: '/docs/getting-started'},
               {label: '功能指南', to: '/docs/guide'},
+              {label: '工具箱', to: '/docs/guide/toolbox'},
+              {label: '从源码构建', to: '/docs/development'},
               {label: '常见问题', to: '/docs/faq'},
             ],
           },

@@ -10,9 +10,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
   <img alt="Bettbox 主界面" src={useBaseUrl('/img/docs-home.png')} width="720" />
 </p>
 
-**Bettbox** 是一款多平台的网络分流与 DNS 调试工具，基于强大的 **Mihomo（Clash Meta）** 内核深度打造。它从 [FlClash](https://github.com/chen08209/FlClash) 早期版本重构而来，在继承其优秀界面与交互的基础上，对细节、性能与多平台体验做了大量打磨。
+**Bettbox** 是一款多平台的网络分流与 DNS 调试工具，基于强大的 **Mihomo（Clash Meta）** 内核深度打造。项目起源于开源项目 [FlClash](https://github.com/chen08209/FlClash)，在继承其界面与交互的基础上，对细节、性能与多平台体验做了大量打磨。
 
-> **Better Experience, Out of the box** —— 更好的体验，亦开箱可用。
+> **Another Better Network Toolbox** —— Bettbox 意为 **Better Network Toolbox**（更好的网络工具箱）。
 
 ---
 
@@ -31,12 +31,16 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 | **Android** | 8.0+ | ARMv8 / ARMv7 / x86_64 / Universal |
 | **Android TV** | 已适配（共用 Android APK，无独立 TV 版） | 低内存设备可选 ARMv7 32 位 |
 | **Windows** | 8.1+ | x64 / arm64（旧 CPU 请用 Compatible 版） |
-| **macOS** | 10.15+ | Intel / Apple Silicon |
+| **macOS** | 12.0+ | Intel / Apple Silicon |
 | **Linux** | Kernel 5.4+ | x64 / arm64（旧 CPU 请用 Compatible 版） |
 | **鸿蒙 NEXT** | 配合 [卓易通](https://harmonyos.cool/android-app) 使用 | — |
 
+:::info 关于 macOS 版本
+macOS 工程的最低部署目标为 **12.0**（`macos/Runner.xcodeproj/project.pbxproj` 中的 `MACOSX_DEPLOYMENT_TARGET = 12.0`），官方 README 也标注为 macOS 12.0+。低于 12.0 的系统不受支持。
+:::
+
 :::tip 关于 Compatible 兼容版
-面向 2012 年前后及更早 CPU（如 AMD v1 架构）等设备，Bettbox 持续维护 **Compatible** 兼容版本，延长老硬件的使用周期。若标准包在您的旧设备上运行异常，请尝试兼容版。
+面向 2012 年前后及更早 CPU 等设备，Bettbox 持续维护 **Compatible** 兼容版本。标准桌面包以 `GOAMD64=v3` 编译，兼容版降到 `GOAMD64=v1`（见 `setup.dart`）；构建矩阵中 Compatible 仅针对 **Windows / Linux 的 amd64（x64）** 提供。若标准包在旧设备上运行异常，请尝试兼容版。
 :::
 
 ---
@@ -48,11 +52,12 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 - **安全守护**：内核紧跟 Mihomo 主线，遵循各平台最小权限，并获得 SignPath 官方 OV 数字签名。
 - **稳定容错**：优化多平台极端场景下的边界问题，内置**双重配置检测验证**，媲美企业级稳定性。
 - **性能优先**：桌面端原生 ARM64 架构支持，提供硬件分级与 Flutter 深度优化，榨干硬件性能。
-- **增强工具**：首个多平台无感智能启停、Android 端休眠支持、一键禁用 QUIC、托盘菜单增强等。
+- **增强工具**：多平台无感智能启停、Android 端 Doze 休眠支持、一键禁用 QUIC、托盘菜单控制代理组等。
 - **可视化设置**：提供更丰富的参数可视化调节界面，改动即时生效，无需繁琐修改 YAML。
 - **APP首页实时网速小组件**：内置多款设计精良的 Widget，在 App 首页直观掌控实时网速与全局运行状态。
+- **全能工具箱**：内置网速测试、路由追踪、DNS 查询、NAT 检测、IP 全能查、iPerf3、Age 加解密等网络诊断工具，详见 [工具箱](/docs/guide/toolbox)。
 - **个性化定制**：支持丰富的色彩主题、自定义图标/标题，甚至还包含 **30 种精美测速动画**。
-- **自定义适配**：首个支持 JS 覆写脚本分流 UI 适配，以及自定义的可视化便捷开关。
+- **自定义适配**：支持 JS 覆写脚本分流 UI 适配，以及自定义的可视化便捷开关。
 - **专业编辑**：多平台内置高性能重构版 **code-forge** 编辑器，体验可媲美专业级编辑器。
 - **设备兼容**：持续维护面向旧版系统及老旧硬件的 Compatible 兼容版本。
 - **零隐私风险**：开源、无广告，全透明 CI/CD 流程接受全方位审计。
@@ -62,14 +67,18 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## 与 FlClash 的关系
 
-Bettbox 是 FlClash 的 Fork，两者**配置格式 100% 兼容**：所有在 FlClash 上能运行的配置文件，在 Bettbox 上均可直接使用，导入、测速、切换节点的逻辑完全一致。在此之上，Bettbox 针对功耗、内核预调优与多平台实用功能做了深度增强。详见 [迁移指南](/docs/migration)。
+Bettbox **起源于 FlClash**（官方 README 致谢中明确说明），两者同基于 Mihomo 内核、使用相同的 Clash/Mihomo 配置格式，导入、测速、切换节点的交互逻辑一脉相承，因此绝大多数 FlClash 配置可以直接迁移使用。源码中也保留了兼容痕迹：Android 端仍注册 `flclash://install-config` 深度链接，内核默认 UA 沿用 `FlClash/ClashMetaForAndroid/2.11.33.Bettbox`。
+
+在此之上，Bettbox 针对功耗、内核预调优与多平台实用功能做了深度增强。详见 [迁移指南](/docs/migration)。
 
 ---
 
 ## 文档导航
 
 - [🚀 快速开始](/docs/getting-started) — 下载安装、导入订阅、首次配置
-- [🔧 功能指南](/docs/guide) — 配置订阅、节点代理、应用分流、小组件与个性化
+- [🔧 功能指南](/docs/guide) — 配置订阅、节点代理、分应用代理、小组件与个性化
+- [🧰 工具箱](/docs/guide/toolbox) — 内置网络与 DNS 调试工具
+- [🛠️ 从源码构建](/docs/development) — 依赖环境与构建命令
 - [🔄 迁移指南](/docs/migration) — 从 FlClash 平滑切换
 - [❓ 常见问题](/docs/faq) — 安装、权限、订阅排障
 - [💬 交流与反馈](/docs/contact) — Telegram / GitHub Issues
@@ -81,3 +90,7 @@ Bettbox 是 FlClash 的 Fork，两者**配置格式 100% 兼容**：所有在 Fl
 - 源码与 Releases：[github.com/appshubcc/Bettbox](https://github.com/appshubcc/Bettbox)
 - Telegram 交流群：[t.me/appshub_chat](https://t.me/appshub_chat)
 - Telegram 频道：[t.me/appshub_channel](https://t.me/appshub_channel)
+
+:::note 文档依据
+本页及系列文档中的功能名称、界面入口、平台要求与命令，均以 [Bettbox 源码仓库](https://github.com/appshubcc/Bettbox)的 README、源码与 Release 说明为准校对；界面名称以简体中文语言包 `arb/intl_zh_CN.arb` 为准。例如官方名称含义「Better Network Toolbox」亦见于 v1.19.7 Release 说明中的「新的 Slogan：Better Network Toolbox」。
+:::

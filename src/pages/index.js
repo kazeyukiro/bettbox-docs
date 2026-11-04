@@ -38,7 +38,7 @@ const PLATFORMS = [
   {
     id: 'macos',
     label: 'macOS',
-    hint: 'macOS 10.15+ · Intel / Apple Silicon',
+    hint: 'macOS 12.0+ · Intel / Apple Silicon',
     arches: [
       {id: 'amd64', label: 'Intel'},
       {id: 'arm64', label: 'Apple Silicon'},
@@ -186,6 +186,7 @@ const FEATURE_ICONS = [
   <path d="M4 6h11v8H4V6Zm11 3h3.5L21 12v2h-6M8 18.5a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Zm9 0a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6Z" key="a" />,
   <path d="M7 11V8a5 5 0 0 1 10 0v3M5.5 11h13V20h-13V11Z" key="a" />,
   <path d="M9 8.5a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4m0 3.2v.2M12 21c-5 0-9-4-9-9s4-9 9-9 9 4 9 9-4 9-9 9Z" key="a" />,
+  <path d="M4 7h16v12H4V7Zm0 4h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m-5 6h4" key="a" />,
 ];
 
 const FEATURES = [
@@ -194,10 +195,11 @@ const FEATURES = [
   {title: '安全守护', desc: '内核紧跟 Mihomo 主线，遵循各平台最小权限，通过 SignPath 审计并装载 OV 数字签名。'},
   {title: '稳定容错', desc: '优化多平台极端场景边界问题，内置双重配置检测验证，媲美企业级使用稳定性。'},
   {title: '性能优先', desc: '桌面端原生 ARM64 架构支持，硬件分级与 Flutter 深度优化，榨干硬件性能。'},
-  {title: '增强工具', desc: '首个多平台无感智能启停、Android 休眠支持、一键禁用 QUIC、托盘菜单增强。'},
+  {title: '增强工具', desc: '多平台无感智能启停、Android Doze 休眠支持、一键禁用 QUIC、托盘菜单增强。'},
   {title: '可视化设置', desc: '更丰富参数的可视化调节界面，改动即时生效，无需繁琐修改配置文件。'},
+  {title: '全能工具箱', desc: '网速测试、路由追踪、DNS 查询、NAT 检测、IP 全能查、iPerf3 与 Age 加解密等调试工具。'},
   {title: '个性化定制', desc: '丰富的色彩主题、自定义图标/标题，甚至包含 30 种精美测速动画。'},
-  {title: '脚本 UI 适配', desc: '首个支持 JS 覆写脚本可用的分流 UI 适配与自定义可视化便捷开关。'},
+  {title: '脚本 UI 适配', desc: '支持 JS 覆写脚本的分流 UI 适配与自定义可视化便捷开关。'},
   {title: '专业编辑', desc: '多平台内置高性能重构版 code-forge 编辑器，媲美专业级编辑器体验。'},
   {title: 'APP首页实时网速小组件', desc: '内置多款设计精良的 Widget 小组件，在 APP 首页直观掌控实时网速与全局运行状态。'},
   {title: '设备兼容', desc: '持续维护面向旧系统与老旧硬件的 Compatible 兼容版本，延长设备使用周期。'},
@@ -470,7 +472,7 @@ function Hero({latest}) {
 
             <p className={styles.lede}>
               基于 Mihomo（Clash Meta）内核的多平台网络分流与 DNS 调试工具。开箱即用、前台流畅、后台省电 —
-              Better Experience, Out of the box.
+              Another Better Network Toolbox.
             </p>
 
             <div className={styles.cta}>
@@ -1030,8 +1032,8 @@ export default function Home() {
 
   return (
     <Layout
-      title={`${siteConfig.title} — Another Better Mihomo Client`}
-      description="Bettbox 是基于 Mihomo（Clash Meta）内核的多平台代理客户端，支持 Android、Windows、macOS 与 Linux。开箱即用、前台流畅、后台省电。">
+      title={`${siteConfig.title} — Another Better Network Toolbox`}
+      description="Bettbox 是基于 Mihomo（Clash Meta）内核的多平台网络分流与 DNS 调试工具，支持 Android、Windows、macOS 与 Linux。开箱即用、前台流畅、后台省电。">
       <Hero latest={latest} />
       <main>
         <Features />

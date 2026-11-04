@@ -14,10 +14,12 @@ const sidebars = {
         'guide/proxies',
         'guide/apps',
         'guide/widgets',
+        'guide/toolbox',
       ],
     },
     { type: 'doc', id: 'migration', label: '🔄 迁移指南' },
     { type: 'doc', id: 'faq', label: '❓ 常见问题' },
+    { type: 'doc', id: 'development', label: '🛠️ 从源码构建' },
     { type: 'doc', id: 'contact', label: '💬 交流与反馈' },
   ],
 };

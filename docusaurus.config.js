@@ -55,6 +55,16 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      announcementBar: {
+        id: 'unofficial-notice',
+        content:
+          '本站是个人整理维护的 <b>Bettbox 非官方中文文档</b>，与 Bettbox 官方无关。软件下载与公告请以 ' +
+          '<a href="https://github.com/appshubcc/Bettbox" target="_blank" rel="noreferrer" style="color:inherit;text-decoration:underline">官方仓库</a> 为准；' +
+          '文档源码见 <a href="https://github.com/kazeyukiro/bettbox-docs" target="_blank" rel="noreferrer" style="color:inherit;text-decoration:underline">kazeyukiro/bettbox-docs</a>。',
+        backgroundColor: '#454e75',
+        textColor: '#f6f4f0',
+        isCloseable: false,
+      },
       image: 'img/logo.png',
       metadata: [
         {
@@ -145,7 +155,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Bettbox · 基于 Mihomo 内核 · GPL-3.0 开源 · Built with Docusaurus`,
+        copyright: `Bettbox 非官方中文文档 · 个人整理维护，与 Bettbox 官方无关 · 文档仓库 kazeyukiro/bettbox-docs · Built with Docusaurus`,
       },
       prism: {
         theme: prismThemes.github,

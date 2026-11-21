@@ -6,6 +6,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Bettbox 是什么
 
+:::note 关于本站
+本站是个人整理维护的 **Bettbox 非官方中文文档**，与 Bettbox 官方团队无关。文中内容依据官方仓库整理，如有出入请以[官方仓库](https://github.com/appshubcc/Bettbox)为准。软件下载、账号与公告请前往官方渠道，本文档仓库仅用于说明与索引。
+:::
+
 <p align="center">
   <img alt="Bettbox 主界面" src={useBaseUrl('/img/docs-home.png')} width="720" />
 </p>

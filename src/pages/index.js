@@ -189,21 +189,21 @@ const FEATURE_ICONS = [
 ];
 
 const FEATURES = [
-  {title: 'Mihomo 内核', desc: '以 Mihomo 为核心，提供规则分流、代理组与 TUN 模式，并持续跟进内核主线版本。'},
-  {title: '多平台覆盖', desc: '支持 Android 7.0+、Windows 8.1+、macOS 12.0+ 与 Linux Kernel 5.4+；桌面端原生 ARM64，Android TV 已完成大屏适配。'},
-  {title: '订阅与配置', desc: '可通过链接、剪贴板、二维码、文件、TV 扫码及代码导入订阅，配置载入前经过双重校验。'},
-  {title: '托管模式', desc: '由内置脚本生成代理组与规则，可设置地区分组、服务、路由及规则集，减少手动维护配置的工作。'},
-  {title: '节点库', desc: '支持导入单节点，或注册 Cloudflare WARP 生成 WireGuard 落地节点，并可指定前置代理后注入配置。'},
-  {title: '分应用代理', desc: '按应用选择代理范围，支持过滤系统应用与白名单、黑名单两种方式。'},
-  {title: 'DNS 与网络配置', desc: 'DNS 遵循订阅配置或托管脚本；内核配置提供通用、网络、NTP、Sniffer、Tunnel 与实验性设置页面。'},
-  {title: '网络调试工具', desc: '集成测速、路由追踪、IP 与 MRS 查询、DNS 查询、NAT 检测、iPerf3 及 Age 加解密等工具。'},
-  {title: '流量统计与 IP 风险', desc: '记录流量使用情况，并对订阅节点的 IP 风险给出提示，便于判断出口状态。'},
-  {title: '可视化设置', desc: '常用参数可在界面中直接调节并即时生效；外置 JS 覆写脚本亦可声明可视化开关。'},
-  {title: '代码编辑器', desc: '内置 Code-forge 编辑器，提供语法高亮与代码折叠，便于查看和修改配置文件。'},
-  {title: '卡片与小组件', desc: '首页卡片支持自定义排列；Android 另提供订阅 · 大号 / 宽条 / 方块三种原生桌面小组件。'},
-  {title: '智能启停', desc: '支持多平台智能启停与移动端 Doze 休眠适配，桌面端可通过托盘菜单快速切换代理组。'},
-  {title: '应用内更新', desc: '可自动检查并下载更新，具备 SHA-256 校验与断点续传；便携版需自行替换文件完成更新。'},
-  {title: '版本变体', desc: '默认提供 Lite 精简版；带 -standard 后缀的完整版包含 Easytier、Tailscale、Zerotier 等组件，另有面向旧设备的 Compatible 兼容版。'},
+  {title: 'Mihomo 内核', desc: '规则分流、代理组和 TUN 由 Mihomo 内核承担，版本跟随上游更新。'},
+  {title: '多平台覆盖', desc: 'Android 7.0+、Windows 8.1+、macOS 12.0+、Linux Kernel 5.4+ 均可安装；桌面端有原生 ARM64 包，Android TV 适配了大屏。'},
+  {title: '订阅与配置', desc: '链接、剪贴板、二维码、文件、TV 扫码和代码六种导入方式；配置载入前做双重校验。'},
+  {title: '托管模式', desc: '用内置脚本生成代理组与规则，地区分组、服务、路由和规则集都能在界面里设置，免去手写配置。'},
+  {title: '节点库', desc: '除了导入单节点，还能注册 Cloudflare WARP 生成 WireGuard 落地节点，指定前置代理后注入配置。'},
+  {title: '分应用代理', desc: '按应用决定哪些流量走代理，可以过滤系统应用，采用白名单或黑名单。'},
+  {title: 'DNS 与网络配置', desc: 'DNS 沿用订阅配置或托管脚本的设置；内核配置细分为通用、网络、NTP、Sniffer、Tunnel 和实验性页面。'},
+  {title: '网络调试工具', desc: '工具箱收录测速、路由追踪、IP 与 MRS 查询、DNS 查询、NAT 检测、iPerf3 和 Age 加解密。'},
+  {title: '流量统计与 IP 风险', desc: '记录流量用量，对订阅节点的 IP 风险作出提示，便于判断出口状态。'},
+  {title: '可视化设置', desc: '常用参数在界面里直接调整、即时生效；外置 JS 覆写脚本也能声明自己的可视化开关。'},
+  {title: '代码编辑器', desc: '内置 Code-forge，带语法高亮和代码折叠，用来查看和修改配置文件。'},
+  {title: '卡片与小组件', desc: '首页卡片可自行排列；Android 另提供订阅 · 大号 / 宽条 / 方块三种系统桌面小组件。'},
+  {title: '智能启停', desc: '支持多平台智能启停和移动端 Doze 休眠，桌面端可从托盘菜单快速切换代理组。'},
+  {title: '应用内更新', desc: '自动检查并下载，带 SHA-256 校验与断点续传；便携版需自行替换文件。'},
+  {title: '版本变体', desc: '默认 Lite；需要 Easytier、Tailscale、Zerotier 时选带 -standard 后缀的包；老旧设备有 Compatible 兼容版。'},
 ];
 
 const ICON_HUES = ['var(--pa-g1)', 'var(--pa-feat)', 'var(--pa-perf)', 'var(--pa-fix)', 'var(--pa-lilac)', 'var(--pa-rose)'];
@@ -341,9 +341,24 @@ function CopyButton({text}) {
   );
 }
 
+/* ================= 实时数值（界面演示用） ================= */
+
+function useLiveNumber(base, spread, decimals = 1, interval = 1800) {
+  const [value, setValue] = useState(base);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setValue(base + (Math.random() - 0.5) * 2 * spread);
+    }, interval);
+    return () => clearInterval(id);
+  }, [base, spread, interval]);
+  return value.toFixed(decimals);
+}
+
 /* ================= Hero 应用预览（纯 CSS/SVG 模型） ================= */
 
 function AppMock() {
+  const down = useLiveNumber(68.4, 12);
+  const up = useLiveNumber(3.2, 1.4);
   return (
     <div className={styles.stage} aria-hidden="true">
       <div className={styles.mock}>
@@ -371,9 +386,9 @@ function AppMock() {
               </svg>
               <div>
                 <div className={styles.mockSpeedNum}>
-                  68.4<span className={styles.mockSpeedUnit}>MB/s</span>
+                  {down}<span className={styles.mockSpeedUnit}>MB/s</span>
                 </div>
-                <div className={styles.mockSpeedSub}>实时下行 · 上行 3.2 MB/s</div>
+                <div className={styles.mockSpeedSub}>实时下行 · 上行 {up} MB/s</div>
               </div>
             </div>
             <svg className={styles.mockChart} viewBox="0 0 260 84" preserveAspectRatio="none">
@@ -404,8 +419,8 @@ function AppMock() {
               {name: '日本 BGP 02', ping: '88ms', hue: 'var(--pa-clay)'},
               {name: '新加坡 03', ping: '112ms', hue: 'var(--pa-slate)'},
               {name: '美国 CN2 04', ping: '156ms', hue: 'var(--pa-lilac)'},
-            ].map((n) => (
-              <div className={styles.mockNode} key={n.name} style={{'--i': 0, '--hue': n.hue}}>
+            ].map((n, i) => (
+              <div className={styles.mockNode} key={n.name} style={{'--i': i, '--hue': n.hue}}>
                 <span className={styles.mockNodeDot} />
                 <span className={styles.mockNodeName}>{n.name}</span>
                 <span className={styles.mockNodePing}>{n.ping}</span>
@@ -417,7 +432,7 @@ function AppMock() {
       <div className={styles.mockWidget}>
         <span className={styles.mockWidgetBar} />
         <div>
-          <div className={styles.mockWidgetSpeed}>45.2 MB/s</div>
+          <div className={styles.mockWidgetSpeed}>{down} MB/s</div>
           <div className={styles.mockWidgetSub}>首页卡片 · Android 桌面小组件</div>
         </div>
       </div>
@@ -470,7 +485,7 @@ function Hero({latest}) {
             </h1>
 
             <p className={styles.lede}>
-              Bettbox 以 Mihomo 为内核，提供跨平台的网络分流与 DNS 调试能力。软件支持 Android、Windows、macOS 与 Linux，具备托管分流模式、节点库与多类网络调试工具，面向长期稳定运行，且不收集使用数据。
+              Bettbox 把 Mihomo 内核与一组网络工具放进同一个客户端，可在 Android、Windows、macOS 和 Linux 上运行。分流、节点管理与调试都在界面内完成，配置也能交由内置脚本生成。软件不收集使用数据。
             </p>
 
             <div className={styles.cta}>
@@ -507,19 +522,19 @@ function Hero({latest}) {
         <ul className={styles.facts}>
           <li style={{'--hue': 'var(--pa-g1)'}}>
             <b>Mihomo 内核</b>
-            <span>以 Mihomo 为核心，支持规则分流、代理组与 TUN 模式，跟随主线持续更新。</span>
+            <span>分流规则、代理组与 TUN 均基于 Mihomo，跟随主线更新。</span>
           </li>
           <li style={{'--hue': 'var(--pa-feat)'}}>
-            <b>订阅与配置</b>
-            <span>支持多种订阅导入方式，配置载入前经双重校验，并提供托管模式简化维护。</span>
+            <b>配置导入</b>
+            <span>六种订阅导入方式，载入前做双重校验；托管模式可代替手工维护规则。</span>
           </li>
           <li style={{'--hue': 'var(--pa-perf)'}}>
             <b>后台运行</b>
-            <span>适配多平台智能启停与移动端休眠机制，降低长期运行的资源占用。</span>
+            <span>智能启停配合移动端休眠机制，降低长时间运行的资源占用。</span>
           </li>
           <li style={{'--hue': 'var(--pa-fix)'}}>
             <b>开源与签名</b>
-            <span>采用 GPL-3.0 协议，构建流程公开可审计；Windows 版使用 SignPath 提供的 OV 代码签名证书。</span>
+            <span>GPL-3.0 协议，构建流程公开可审计；Windows 版使用 SignPath 提供的 OV 代码签名。</span>
           </li>
         </ul>
       </div>
@@ -537,7 +552,7 @@ function Features() {
             01
           </p>
           <h2>功能概览</h2>
-          <p className={styles.sectionSub}>涵盖连接、配置、调试与个性化，各平台功能保持一致</p>
+          <p className={styles.sectionSub}>按用途分为几组，各平台的差别仅在个别组件上</p>
         </Reveal>
         <div className={styles.featureGrid}>
           {FEATURES.map((f, i) => (
@@ -614,7 +629,7 @@ function DownloadSection({latest, loading}) {
                 : '前往 GitHub 获取最新版本'}
             </p>
             <p className={styles.railText}>
-              页面已按当前设备预选平台，各安装包均标注适用范围。较旧的处理器请选用 Compatible 兼容版。
+              页面按当前设备预选了平台。每个安装包都标了适用架构，旧处理器请选 Compatible 兼容版。
             </p>
             <p className={styles.railLinks}>
               <a href={LATEST_URL} target="_blank" rel="noreferrer">
@@ -761,7 +776,7 @@ function ChangelogSection({releases, loading}) {
               03
             </p>
             <h2>更新日志</h2>
-            <p className={styles.sectionSub}>变更内容按版本整理，可按版本号或关键字检索</p>
+            <p className={styles.sectionSub}>按版本记录变更，可搜索版本号或关键字</p>
             <label className={styles.search}>
               <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
                 <circle cx="9" cy="9" r="5.75" fill="none" stroke="currentColor" strokeWidth="1.6" />
@@ -863,7 +878,7 @@ function Community() {
   const cards = [
     {
       title: 'Telegram 交流群',
-      desc: '交流使用问题与配置经验，参与社区讨论。',
+      desc: '讨论使用中遇到的问题，交流配置写法。',
       href: 'https://t.me/bettbox_chat',
       cta: '加入交流',
       hue: 'var(--pa-slate)',
@@ -876,7 +891,7 @@ function Community() {
     },
     {
       title: 'Telegram 频道',
-      desc: '版本发布、更新公告与项目动态同步推送。',
+      desc: '版本发布、更新公告和项目动态从这里发出。',
       href: 'https://t.me/appshub_channel',
       cta: '订阅频道',
       hue: 'var(--pa-perf)',
@@ -909,7 +924,7 @@ function Community() {
             04
           </p>
           <h2>社区与反馈</h2>
-          <p className={styles.sectionSub}>开源项目，问题讨论、版本公告与反馈渠道如下</p>
+          <p className={styles.sectionSub}>项目开源，讨论、公告与反馈分以下几个渠道</p>
         </Reveal>
         <div className={styles.communityGrid}>
           {cards.map((c, i) => (
@@ -952,9 +967,9 @@ function CtaBand({version}) {
     <section className={styles.ctaBand}>
       <div className="pa-container">
         <Reveal className={styles.ctaBandInner} scale>
-          <h2>为长期稳定运行而生</h2>
+          <h2>开始使用</h2>
           <p>
-            {version ? `当前版本 v${version.replace(/^v/, '')}` : '最新版本'} 已在各平台发布，可前往下载或查阅文档。
+            {version ? `v${version.replace(/^v/, '')} 已在各平台发布` : '各平台版本'} —— 下载安装，或从快速开始读起。
           </p>
           <div className={styles.cta}>
             <a className={styles.btnPrimary} href={LATEST_URL} target="_blank" rel="noreferrer">

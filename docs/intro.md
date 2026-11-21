@@ -4,93 +4,100 @@ sidebar_position: 1
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# 欢迎使用 Bettbox
+# Bettbox 是什么
 
 <p align="center">
   <img alt="Bettbox 主界面" src={useBaseUrl('/img/docs-home.png')} width="720" />
 </p>
 
-**Bettbox** 是一款多平台的网络分流与 DNS 调试工具，基于强大的 **Mihomo（Clash Meta）** 内核深度打造。项目起源于开源项目 [FlClash](https://github.com/chen08209/FlClash)，在继承其界面与交互的基础上，对细节、性能与多平台体验做了大量打磨。
+**Bettbox** 是一款基于 **Mihomo** 内核的多平台网络分流与 DNS 调试工具。官方 README 将项目定位为「更专注于极致的用户体验，为长期稳定运行而生，轻量省资源，且不收集任何数据」。
 
-> **Another Better Network Toolbox** —— Bettbox 意为 **Better Network Toolbox**（更好的网络工具箱）。
+> 项目口号：**Another Better Network Toolbox**。README 明确写明：Bettbox 取自 **Better Network Toolbox**。
+
+本套文档按 **2026-11-21 的 `main` 分支源码**重写，对应版本号 `1.19.9+2026112101`（`pubspec.yaml`）。所有功能名称、入口、限制与命令均来自源码、中文语言包 `arb/intl_zh_CN.arb` 或 Release 说明；文末标注依据文件。
 
 ---
 
-## 它解决什么问题
+## 项目出身
 
-- **开箱即用**：预置了稳定的权限处理与舒适的 TUN / VPN 体验，大量优化细节让软件在首次安装后即可达到可用状态，减少繁琐的手动调试。
-- **前台流畅、后台省电**：移动端低能耗、桌面端低占用，以少量资源消耗即可长期稳定运行。
-- **安全透明**：开源（GPL-3.0）、无广告、无隐私收集，CI/CD 流程全透明可审计；已通过 [SignPath](https://signpath.io) 开源基金会人工安全溯源，Windows 端装载 OV 数字签名。
+- 内核使用 [Mihomo](https://github.com/MetaCubeX/mihomo)，源码内置于 `core/Clash.Meta/`。
+- README 致谢中说明，项目**起源于 [FlClash](https://github.com/chen08209/FlClash)**。
+- 采用 [GPL-3.0](https://github.com/appshubcc/Bettbox/blob/main/LICENSE) 开源协议，无广告，README 声明不收集数据。
+- README 写明项目已通过 SignPath 开源基金会人工审核安全溯源，Windows 版使用 OV 代码签名证书；需要注意 v1.19.6 的 Release 说明曾提到因 Google 账号原因临时禁用 Windows 签名流程，具体以所下载版本的实际签名为准。
 
 ---
 
 ## 支持平台
 
-| 平台 | 系统要求 | 架构 |
-| :--- | :--- | :--- |
-| **Android** | 8.0+ | ARMv8 / ARMv7 / x86_64 / Universal |
-| **Android TV** | 已适配（共用 Android APK，无独立 TV 版） | 低内存设备可选 ARMv7 32 位 |
-| **Windows** | 8.1+ | x64 / arm64（旧 CPU 请用 Compatible 版） |
-| **macOS** | 12.0+ | Intel / Apple Silicon |
-| **Linux** | Kernel 5.4+ | x64 / arm64（旧 CPU 请用 Compatible 版） |
-| **鸿蒙 NEXT** | 配合 [卓易通](https://harmonyos.cool/android-app) 使用 | — |
+| 平台 | 要求 | 架构 / 说明 | 依据 |
+| :--- | :--- | :--- | :--- |
+| Android | **7.0+** | ARMv8 / ARMv7 / x86_64 / Universal；Android TV 为完整大屏适配 | README；`android/app/build.gradle.kts` 中 `minSdk = 24` |
+| Windows | 8.1+ | x64 / arm64；旧 CPU 可用 Compatible | README |
+| macOS | **12.0+** | Intel / Apple Silicon | README；Xcode 工程 `MACOSX_DEPLOYMENT_TARGET = 12.0` |
+| Linux | Kernel 5.4+ | x64 / arm64；旧 CPU 可用 Compatible | README |
+| 鸿蒙 NEXT | 通过[卓易通](https://harmonyos.cool/android-app)使用 | 复用 Android 应用 | README |
 
-:::info 关于 macOS 版本
-macOS 工程的最低部署目标为 **12.0**（`macos/Runner.xcodeproj/project.pbxproj` 中的 `MACOSX_DEPLOYMENT_TARGET = 12.0`），官方 README 也标注为 macOS 12.0+。低于 12.0 的系统不受支持。
+:::caution Android 最低版本已变化
+v1.19.9 Release 说明写明「Android 最低支持版本下调至 Android 7.0」，README 同样标注 Android 7.0+。旧版本发布页中的 Android 8.0+ 已不再适用。
 :::
 
-:::tip 关于 Compatible 兼容版
-面向 2012 年前后及更早 CPU 等设备，Bettbox 持续维护 **Compatible** 兼容版本。标准桌面包以 `GOAMD64=v3` 编译，兼容版降到 `GOAMD64=v1`（见 `setup.dart`）；构建矩阵中 Compatible 仅针对 **Windows / Linux 的 amd64（x64）** 提供。若标准包在旧设备上运行异常，请尝试兼容版。
-:::
+### Lite 与 Standard 变体
+
+从 v1.19.8 起提供两个内核变体，v1.19.9 起**默认产物改为 Lite**，完整版需选择带 `-standard` 后缀的包：
+
+| 变体 | 构建参数 | 内核构建标签（`setup.dart` 的 `getTags`） | 说明 |
+| :--- | :--- | :--- | :--- |
+| **Lite（默认）** | 不加 `--standard` | `no_easytier,no_tailscale,no_zerotier,no_fake_tcp,with_low_memory` | 不含 EasyTier / Tailscale / Zerotier / fake-tcp / gVisor 相关能力 |
+| **Standard** | `--standard` | `with_gvisor` | 包含上述组件；Android `armeabi-v7a` 额外带 `with_low_memory` |
+
+v1.19.9 Release 说明特别提示：需要使用 **Easytier、Tailscale、Zerotier** 等协议时，必须下载带 `-standard` 后缀的版本。
+
+### Compatible 兼容版
+
+面向 2012 年前后及更早的 CPU。`setup.dart` 中 Windows / Linux 的 amd64 标准包以 `GOAMD64=v3` 编译，`--compatible` 时改为 `v1`；macOS 的 amd64 固定为 `v1`。CI 构建矩阵中 Compatible 仅覆盖 **Windows / Linux 的 amd64**。
 
 ---
 
-## 核心特性
+## 能做什么
 
-- **开箱即用**：稳定的权限处理与舒适的 TUN/VPN 体验，大量预置优化细节，开箱即达可用状态。
-- **精雕细琢**：打磨每处 UI 与功能交互细节，前台高帧率动画流畅，移动端低能耗，桌面端低占用。
-- **安全守护**：内核紧跟 Mihomo 主线，遵循各平台最小权限，并获得 SignPath 官方 OV 数字签名。
-- **稳定容错**：优化多平台极端场景下的边界问题，内置**双重配置检测验证**，媲美企业级稳定性。
-- **性能优先**：桌面端原生 ARM64 架构支持，提供硬件分级与 Flutter 深度优化，榨干硬件性能。
-- **增强工具**：多平台无感智能启停、Android 端 Doze 休眠支持、一键禁用 QUIC、托盘菜单控制代理组等。
-- **可视化设置**：提供更丰富的参数可视化调节界面，改动即时生效，无需繁琐修改 YAML。
-- **APP首页实时网速小组件**：内置多款设计精良的 Widget，在 App 首页直观掌控实时网速与全局运行状态。
-- **全能工具箱**：内置网速测试、路由追踪、DNS 查询、NAT 检测、IP 全能查、iPerf3、Age 加解密等网络诊断工具，详见 [工具箱](/docs/guide/toolbox)。
-- **个性化定制**：支持丰富的色彩主题、自定义图标/标题，甚至还包含 **30 种精美测速动画**。
-- **自定义适配**：支持 JS 覆写脚本分流 UI 适配，以及自定义的可视化便捷开关。
-- **专业编辑**：多平台内置高性能重构版 **code-forge** 编辑器，体验可媲美专业级编辑器。
-- **设备兼容**：持续维护面向旧版系统及老旧硬件的 Compatible 兼容版本。
-- **零隐私风险**：开源、无广告，全透明 CI/CD 流程接受全方位审计。
-- **社区导向**：认真评估社区反馈，优先对待高质量的 Issue。
-
----
-
-## 与 FlClash 的关系
-
-Bettbox **起源于 FlClash**（官方 README 致谢中明确说明），两者同基于 Mihomo 内核、使用相同的 Clash/Mihomo 配置格式，导入、测速、切换节点的交互逻辑一脉相承，因此绝大多数 FlClash 配置可以直接迁移使用。源码中也保留了兼容痕迹：Android 端仍注册 `flclash://install-config` 深度链接，内核默认 UA 沿用 `FlClash/ClashMetaForAndroid/2.11.33.Bettbox`。
-
-在此之上，Bettbox 针对功耗、内核预调优与多平台实用功能做了深度增强。详见 [迁移指南](/docs/migration)。
+- **流量接管**：TUN 虚拟网卡、系统代理、Android VPN 服务；桌面端托盘快捷控制代理组。
+- **规则分流**：Mihomo 规则引擎，支持域名、GeoIP、进程等匹配维度；`lib/enum/enum.dart` 的 `RuleAction` 枚举列出了可用规则类型。
+- **订阅管理**：URL / 文件 / 二维码 / 剪贴板导入，自动更新，订阅合并，Age 加密订阅，WebDAV / 本地备份。
+- **托管模式**：使用内置脚本生成代理组与规则，可配置地区分组、服务、路由与规则集（见[托管模式](/docs/guide/managed)）。
+- **节点库**：导入单节点、注册 Cloudflare WARP 生成 WireGuard 落地节点、指定前置代理并注入配置（见[节点与代理组](/docs/guide/proxies)）。
+- **首页与桌面小组件**：首页卡片可自定义；Android 另有三种规格的系统桌面小组件（见[首页与小组件](/docs/guide/widgets)）。
+- **工具箱**：测速、路由追踪、DNS 查询、NAT 检测、iPerf3、流量统计、Age 加解密等（见[工具箱](/docs/guide/toolbox)）。
+- **应用内更新**：自动检查、后台下载、SHA-256 校验、断点续传与覆盖安装（见[应用更新](/docs/guide/updates)）。
+- **脚本与编辑器**：外置 JS 覆写脚本可声明可视化开关；内置 code-forge 编辑器。
 
 ---
 
 ## 文档导航
 
-- [🚀 快速开始](/docs/getting-started) — 下载安装、导入订阅、首次配置
-- [🔧 功能指南](/docs/guide) — 配置订阅、节点代理、分应用代理、小组件与个性化
-- [🧰 工具箱](/docs/guide/toolbox) — 内置网络与 DNS 调试工具
-- [🛠️ 从源码构建](/docs/development) — 依赖环境与构建命令
-- [🔄 迁移指南](/docs/migration) — 从 FlClash 平滑切换
-- [❓ 常见问题](/docs/faq) — 安装、权限、订阅排障
-- [💬 交流与反馈](/docs/contact) — Telegram / GitHub Issues
+| 页面 | 内容 |
+| :--- | :--- |
+| [快速开始](/docs/getting-started) | 下载、安装、导入订阅、开启代理 |
+| [功能指南](/docs/guide) | 功能地图与导航结构 |
+| [配置与订阅](/docs/guide/config) | 订阅导入、更新、备份、配置编辑 |
+| [节点与代理组](/docs/guide/proxies) | 代理组、测速、规则、DNS、节点库 |
+| [托管模式](/docs/guide/managed) | 内置脚本、规则集、覆写规则 |
+| [分应用代理](/docs/guide/apps) | 应用黑白名单 |
+| [首页与小组件](/docs/guide/widgets) | 首页卡片、桌面小组件、主题、脚本 UI |
+| [工具箱](/docs/guide/toolbox) | 网络与 DNS 调试工具 |
+| [应用更新](/docs/guide/updates) | 更新设置与版本选择 |
+| [从源码构建](/docs/development) | 依赖、命令、构建矩阵 |
+| [迁移指南](/docs/migration) | 从 FlClash 切换 |
+| [常见问题](/docs/faq) | 排障 |
+| [交流与反馈](/docs/contact) | 官方社区与 Issue |
 
 ---
 
 ## 官方资源
 
 - 源码与 Releases：[github.com/appshubcc/Bettbox](https://github.com/appshubcc/Bettbox)
-- Telegram 交流群：[t.me/appshub_chat](https://t.me/appshub_chat)
+- Telegram 交流群：[t.me/bettbox_chat](https://t.me/bettbox_chat)
 - Telegram 频道：[t.me/appshub_channel](https://t.me/appshub_channel)
 
-:::note 文档依据
-本页及系列文档中的功能名称、界面入口、平台要求与命令，均以 [Bettbox 源码仓库](https://github.com/appshubcc/Bettbox)的 README、源码与 Release 说明为准校对；界面名称以简体中文语言包 `arb/intl_zh_CN.arb` 为准。例如官方名称含义「Better Network Toolbox」亦见于 v1.19.7 Release 说明中的「新的 Slogan：Better Network Toolbox」。
+:::note 本文源码依据
+`README.md`、`pubspec.yaml`、`android/app/build.gradle.kts`、`macos/Runner.xcodeproj/project.pbxproj`、`setup.dart`、`.github/workflows/build.yaml`、`core/Clash.Meta/docs/config.yaml`、v1.19.8 / v1.19.9 Release 说明。
 :::

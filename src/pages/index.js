@@ -16,7 +16,7 @@ const PLATFORMS = [
   {
     id: 'android',
     label: 'Android',
-    hint: 'Android 8.0+ · 手机 / 平板 / Android TV 已完整适配',
+    hint: 'Android 7.0+ · 手机 / 平板 / Android TV 已完整适配',
     arches: [
       {id: 'arm64-v8a', label: 'ARMv8'},
       {id: 'armeabi-v7a', label: 'ARMv7'},
@@ -190,21 +190,24 @@ const FEATURE_ICONS = [
 ];
 
 const FEATURES = [
-  {title: '开箱即用', desc: '稳定的权限处理与舒适的 TUN/VPN 体验，大量预置优化细节，开箱即达可用状态。'},
-  {title: '精雕细琢', desc: '打磨每处 UI 与交互细节，前台高帧率动画流畅，移动端低能耗，桌面端低占用。'},
-  {title: '安全守护', desc: '内核紧跟 Mihomo 主线，遵循各平台最小权限，通过 SignPath 审计并装载 OV 数字签名。'},
-  {title: '稳定容错', desc: '优化多平台极端场景边界问题，内置双重配置检测验证，媲美企业级使用稳定性。'},
-  {title: '性能优先', desc: '桌面端原生 ARM64 架构支持，硬件分级与 Flutter 深度优化，榨干硬件性能。'},
-  {title: '增强工具', desc: '多平台无感智能启停、Android Doze 休眠支持、一键禁用 QUIC、托盘菜单增强。'},
-  {title: '可视化设置', desc: '更丰富参数的可视化调节界面，改动即时生效，无需繁琐修改配置文件。'},
-  {title: '全能工具箱', desc: '网速测试、路由追踪、DNS 查询、NAT 检测、IP 全能查、iPerf3 与 Age 加解密等调试工具。'},
-  {title: '个性化定制', desc: '丰富的色彩主题、自定义图标/标题，甚至包含 30 种精美测速动画。'},
-  {title: '脚本 UI 适配', desc: '支持 JS 覆写脚本的分流 UI 适配与自定义可视化便捷开关。'},
-  {title: '专业编辑', desc: '多平台内置高性能重构版 code-forge 编辑器，媲美专业级编辑器体验。'},
-  {title: 'APP首页实时网速小组件', desc: '内置多款设计精良的 Widget 小组件，在 APP 首页直观掌控实时网速与全局运行状态。'},
-  {title: '设备兼容', desc: '持续维护面向旧系统与老旧硬件的 Compatible 兼容版本，延长设备使用周期。'},
-  {title: '零隐私风险', desc: '开源、无广告，全透明 CI/CD 流程接受全方位审计，杜绝任何后台隐私收集。'},
-  {title: '社区导向', desc: '认真评估社区反馈，优先对待高质量 Issue，你的声音不会无故被淹没。'},
+  {title: '开箱即用', desc: '预置权限引导、TUN 与托管分流模式，安装后即可使用。'},
+  {title: '轻量畅快', desc: '移动端低功耗、桌面端后台占用低，界面动画流畅。'},
+  {title: '安全可信', desc: '内核跟随 Mihomo 主线，各平台只申请最小权限；README 说明 Windows 版使用 SignPath 提供的 OV 代码签名证书。'},
+  {title: '稳定容错', desc: '优化多平台极端网络环境下的边界问题，README 提到配置双重校验，适合长期运行。'},
+  {title: '架构优化', desc: '桌面端原生支持 ARM64，持续维护面向旧设备的 Compatible 兼容版。'},
+  {title: '智能守护', desc: '多平台智能启停、移动端 Doze 休眠适配，桌面端托盘快捷控制代理组。'},
+  {title: '可视化设置', desc: '参数可视化调节，改动即时生效；内核配置包含通用、网络、NTP、Sniffer、Tunnel 与实验性页面。'},
+  {title: '托管模式', desc: '使用内置脚本生成代理组与规则，可配置地区分组、服务、路由与规则集。'},
+  {title: '节点库', desc: '导入单节点或注册 Cloudflare WARP 生成 WireGuard 落地节点，指定前置代理并注入配置。'},
+  {title: '全能工具箱', desc: '网速测试、路由追踪、DNS 查询、NAT 检测、iPerf3、流量统计与 Age 加解密等调试工具。'},
+  {title: '个性化定制', desc: '多套主题色彩，可自定义图标与标题，内置 30 种测速动效。'},
+  {title: '脚本 UI 适配', desc: '外置 JS 覆写脚本可声明可视化开关，自动渲染为可用界面。'},
+  {title: '专业编辑', desc: '内置高性能 Code-forge 编辑器，支持语法高亮与代码折叠。'},
+  {title: '小组件', desc: '首页卡片可自定义；Android 另有订阅 · 大号 / 宽条 / 方块三种原生桌面小组件。'},
+  {title: '应用内更新', desc: '自动检查更新、后台下载、SHA-256 校验与覆盖安装；便携版需手动更新。'},
+  {title: '版本可选', desc: '默认 Lite 精简版；带 -standard 后缀的完整版包含 Easytier、Tailscale、Zerotier 等组件。'},
+  {title: '零隐私风险', desc: '代码开源、无广告，CI/CD 全自动且公开可审计，README 声明无后台数据收集。'},
+  {title: '社区导向', desc: '认真对待社区反馈，与活跃用户社群共同进化，积极响应高质量 Issue。'},
 ];
 
 const ICON_HUES = ['var(--pa-g1)', 'var(--pa-feat)', 'var(--pa-perf)', 'var(--pa-fix)', 'var(--pa-lilac)', 'var(--pa-rose)'];
@@ -419,7 +422,7 @@ function AppMock() {
         <span className={styles.mockWidgetBar} />
         <div>
           <div className={styles.mockWidgetSpeed}>45.2 MB/s</div>
-          <div className={styles.mockWidgetSub}>APP首页实时网速小组件</div>
+          <div className={styles.mockWidgetSub}>首页卡片 · Android 桌面小组件</div>
         </div>
       </div>
     </div>
@@ -471,7 +474,7 @@ function Hero({latest}) {
             </h1>
 
             <p className={styles.lede}>
-              基于 Mihomo（Clash Meta）内核的多平台网络分流与 DNS 调试工具。开箱即用、前台流畅、后台省电 —
+              基于 Mihomo 内核的多平台网络分流与 DNS 调试工具。Lite / Standard 按需选择，首页卡片与 Android 桌面小组件随手掌控运行状态 —
               Another Better Network Toolbox.
             </p>
 
@@ -866,7 +869,7 @@ function Community() {
     {
       title: 'Telegram 交流群',
       desc: '使用问题、经验交流与第一时间的社区讨论。',
-      href: 'https://t.me/appshub_chat',
+      href: 'https://t.me/bettbox_chat',
       cta: '加入交流',
       hue: 'var(--pa-slate)',
       icon: (
@@ -1033,7 +1036,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title} — Another Better Network Toolbox`}
-      description="Bettbox 是基于 Mihomo（Clash Meta）内核的多平台网络分流与 DNS 调试工具，支持 Android、Windows、macOS 与 Linux。开箱即用、前台流畅、后台省电。">
+      description="Bettbox 是基于 Mihomo 内核的多平台网络分流与 DNS 调试工具，支持 Android 7.0+、Windows 8.1+、macOS 12.0+ 与 Linux Kernel 5.4+。提供托管模式、节点库与丰富调试工具。">
       <Hero latest={latest} />
       <main>
         <Features />

@@ -2,32 +2,52 @@
 
 [Bettbox](https://github.com/appshubcc/Bettbox) 的中文文档站点，使用 [Docusaurus](https://docusaurus.io/) 构建。
 
-文档内容以 **Bettbox 源码仓库**的 README、源码（`lib/`、`core/`、`setup.dart`、`.github/workflows/build.yaml`、简体中文语言包 `arb/intl_zh_CN.arb`）与 Release 说明为依据校对，避免与客户端实际界面和功能脱节。
+## 文档依据
+
+内容按 **2026-11-21 的 Bettbox `main` 分支源码**重写，对应 `pubspec.yaml` 版本 `1.19.9+2026112101`。事实来源包括：
+
+- `README.md` 与各语言 README
+- `pubspec.yaml`、`setup.dart`、`.github/workflows/build.yaml`
+- `lib/`：导航、设置、界面与网络工具实现
+- `arb/intl_zh_CN.arb`：简体中文界面文案
+- `core/Clash.Meta/`：Mihomo 内核配置示例与 Age 实现
+- `android/`、`macos/` 等平台工程配置
+- GitHub Release 说明
+
+没有源码依据的说法不写入文档；版本差异会注明来自哪次 Release。
 
 ## 目录
 
 | 路径 | 内容 |
 | :--- | :--- |
-| `docs/intro.md` | 介绍、支持平台、核心特性 |
+| `docs/intro.md` | 项目介绍、平台要求、Lite / Standard / Compatible |
 | `docs/getting-started.md` | 下载安装、导入订阅、开启代理 |
-| `docs/guide/` | 配置与订阅、节点与代理组、分应用代理、小组件与个性化、工具箱 |
-| `docs/development.md` | 从源码构建（依赖、命令、构建矩阵） |
+| `docs/guide/index.md` | 导航结构、设置分组、功能地图 |
+| `docs/guide/config.md` | 订阅、更新、Age、备份与恢复、外部资源 |
+| `docs/guide/proxies.md` | 代理组、规则、DNS、节点库 |
+| `docs/guide/managed.md` | 托管模式、内置脚本与规则集 |
+| `docs/guide/apps.md` | 分应用代理 |
+| `docs/guide/widgets.md` | 首页卡片、Android 桌面小组件、主题、脚本 UI |
+| `docs/guide/toolbox.md` | 网络与 DNS 调试工具 |
+| `docs/guide/updates.md` | 应用内更新 |
+| `docs/development.md` | 从源码构建 |
 | `docs/migration.md` / `docs/faq.md` / `docs/contact.md` | 迁移、排障、反馈渠道 |
+| `blog/` | Age Key 专题文章 |
 | `src/pages/index.js` | 首页（下载、特性、更新日志） |
-| `scripts/fetch-releases.mjs` | 构建时预抓取 Releases 到 `static/releases.json` |
+| `scripts/fetch-releases.mjs` | 构建时抓取 Releases 到 `static/releases.json` |
 
 ## 本地开发
 
-仓库使用 npm（`package-lock.json`），也可用 yarn：
+仓库使用 npm（`package-lock.json`）：
 
 ```bash
-npm ci          # 或 yarn
-npm start       # 本地开发服务器，改动实时预览
-npm run build   # 先执行 prebuild 抓取 Releases，再生成静态站点到 build/
-npm run serve   # 本地预览构建结果
+npm ci
+npm start
+npm run build
+npm run serve
 ```
 
-`prebuild` 会调用 `scripts/fetch-releases.mjs` 从 GitHub API 抓取最近 30 个 Release；设置 `GITHUB_TOKEN` / `GH_TOKEN` 可提高速率限额，抓取失败时保留已有 `static/releases.json` 兜底。
+`prebuild` 会从 GitHub API 抓取最近 30 个 Release；设置 `GITHUB_TOKEN` / `GH_TOKEN` 可提高速率限额，抓取失败时保留已有 `static/releases.json`。
 
 ## 部署
 

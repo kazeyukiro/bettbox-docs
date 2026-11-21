@@ -4,47 +4,86 @@ sidebar_position: 1
 
 # 功能指南总览
 
-Bettbox 的能力围绕「**内核 + 可视化 + 个性化**」三层展开。本页是功能地图，点开任一卡片即可深入。
+Bettbox 的界面由**导航页面 + 设置分组 + 首页卡片 + 工具箱**组成。本页是功能地图，具体规则以源码中的导航定义与中文语言包为准。
+
+---
+
+## 导航结构
+
+源码 `lib/common/navigation.dart` 定义 `Navigation.getItems()`，`PageLabel` 枚举列出所有页面。各页面的显示位置由 `modes` 决定：
+
+| 页面（`PageLabel`） | 中文名 | 出现位置 |
+| :--- | :--- | :--- |
+| `dashboard` | 首页 | 移动端 / 桌面端 |
+| `proxies` | 代理 | 移动端 / 桌面端（存在代理时） |
+| `profiles` | 配置 | 移动端 / 桌面端 |
+| `connections` | 连接 | 桌面端 / 更多 |
+| `resources` | 外部资源 | 更多 |
+| `script` | 覆写脚本 | 更多 |
+| `toolbox` | 工具箱 | 桌面端 / 更多 |
+| `logs` | 日志 | 桌面端 / 更多 |
+| `tools` | 更多 | 移动端 / 桌面端 |
+
+:::tip 找不到设置项
+「更多」页面提供设置项搜索（`lib/views/tools.dart` 中的 `_query` / `_cachedSearchItems`），可直接输入名称定位；桌面的侧边栏悬浮快捷入口也可配置。
+:::
+
+---
+
+## 设置分组
+
+`lib/views/tools.dart` 中，「更多 → 设置」下的主要分组与入口包括：
+
+| 分组 | 中文名 | 主要内容 |
+| :--- | :--- | :--- |
+| 内核配置 | 内核配置 | 全局修改内核参数，见下方子页 |
+| 增强工具 | 增强工具 | 智能启停、Doze 休眠、禁用 QUIC、通知栏网速、托盘增强等 |
+| 分应用代理 | 分应用代理 | 应用访问黑白名单 |
+| 备份与恢复 | 备份与恢复 | WebDAV / 本地备份与恢复 |
+| 应用程序 | 应用程序 | 自启动、静默启动、托盘与窗口行为、自动检查/下载更新 |
+| 主题 | 主题 | 主题模式、主题色彩、字体修复、文本缩放 |
+| 语言 | 语言 | 界面语言 |
+| 关于 | 关于 | 版本信息、检查更新 |
+
+另有「外部资源」「覆写脚本」「工具箱」「快捷键管理」「回环解锁」「声明」「开发者模式」等独立入口，具体以当前平台界面为准。
+
+### 内核配置子页
+
+`lib/views/config/config.dart` 中「内核配置」包含六个子页：
+
+1. 通用
+2. 网络
+3. NTP
+4. Sniffer
+5. Tunnel
+6. 实验性
+
+:::caution DNS 覆写页面已移除
+v1.19.8 Release 说明写明「完整移除原 DNS 覆写页面选项」；v1.19.9 进一步写明「完整移除应用侧默认 DNS 配置覆写与覆写规则集自动注入，完全遵循配置文件或托管脚本的 DNS 设置」。因此内核配置中**不再有独立的 DNS 覆写页**。DNS 由配置文件或[托管模式](/docs/guide/managed)脚本决定。
+:::
 
 ---
 
 ## 功能地图
 
-| 模块 | 你能做什么 | 深入阅读 |
-| :--- | :--- | :--- |
-| **配置与订阅** | URL / 文件 / 二维码 / 剪贴板导入，自动更新，WebDAV 与本地备份，YAML 编辑 | [配置订阅指南](/docs/guide/config) |
-| **节点与代理组** | 代理组选择、延迟测试、TUN、系统代理、规则分流、DNS | [节点与代理组](/docs/guide/proxies) |
-| **分应用代理** | 按 App 决定进入或排除 VPN，黑白名单模式 | [分应用代理](/docs/guide/apps) |
-| **小组件与个性化** | APP首页实时网速小组件、30 种测速动画、主题/图标、脚本 UI 适配 | [小组件与个性化](/docs/guide/widgets) |
-| **工具箱** | 网速测试、路由追踪、DNS 查询、NAT 检测、IP 全能查、iPerf3、Age 加解密等 | [工具箱](/docs/guide/toolbox) |
+| 想做的事 | 页面 |
+| :--- | :--- |
+| 导入、更新、备份配置 | [配置与订阅](/docs/guide/config) |
+| 代理组、测速、规则、DNS、节点库 | [节点与代理组](/docs/guide/proxies) |
+| 用内置脚本生成代理组与规则 | [托管模式](/docs/guide/managed) |
+| 让指定 App 进入或绕过 VPN | [分应用代理](/docs/guide/apps) |
+| 首页卡片、Android 桌面小组件、主题、脚本 UI | [首页与小组件](/docs/guide/widgets) |
+| 网络与 DNS 调试 | [工具箱](/docs/guide/toolbox) |
+| 检查与安装更新 | [应用更新](/docs/guide/updates) |
 
 ---
 
-## 核心代理能力
+## 能力来源
 
-基于 **Mihomo（Clash Meta）** 内核，Bettbox 支持完整的主流能力：
+- **内核**：`core/Clash.Meta/` 内置 Mihomo；出站实现包含 Shadowsocks、ShadowsocksR、VMess、VLESS、Trojan、Hysteria、Hysteria2、TUIC、WireGuard、SSH、AnyTLS、Mieru、Snell、HTTP、SOCKS5、ShadowTLS、Masque、TrustTunnel、Sudoku、OpenVPN、EasyTier、Tailscale、Zerotier 等文件（部分仅 Standard 变体包含）。
+- **编辑器**：`plugins/code_forge`，README 称其为高性能 Code-forge 编辑器。
+- **图标**：v1.19.9 Release 说明引入 Phosphor 图标包，Android 端默认开启。
 
-- **协议支持**：内核 `core/Clash.Meta/adapter/outbound/` 中实现了 VLESS、VMess、Trojan、Shadowsocks/SSR、Hysteria2、TUIC、WireGuard、SSH、AnyTLS、Mieru、Snell、HTTP/SOCKS5、Masque、TrustTunnel、Sudoku 等出站类型。
-- **规则引擎**：按域名、IP、GEOIP 地理位置、进程名灵活分流。
-- **TUN 模式**：以虚拟网卡接管系统流量，无需逐应用配置。
-- **Fake-IP / 增强 DNS**：提升首次连接速度，规避 DNS 污染。
-
----
-
-## 可视化与个性化
-
-- **改动即时生效**：绝大多数参数在可视化界面调整后即时应用，无需手改 YAML。
-- **内核配置**：「更多 → 设置 → 内核配置」下分为通用、网络、DNS、NTP、Sniffer、Tunnel、实验性等子页面，并支持覆写相关内核选项。
-- **专业编辑器**：内置重构版 **code-forge** 编辑器（`plugins/code_forge`），支持语法高亮、代码折叠，体验可媲美专业级编辑器。
-- **APP首页实时网速小组件**：多款首页卡片（网速、流量、出口模式、连接数、内网 IP、内存、流媒体解锁等）可调整尺寸与排布，直观掌控实时网速与运行状态。
-- **30 种测速动画**：让等待节点测速的过程也赏心悦目，还可关闭动画或同步到其他页面。
-
----
-
-## 新手建议
-
-> 初次使用时，建议保持所有设置默认，仅通过「导入订阅」开始体验。Bettbox 已预设了最优的默认参数；待熟悉后再逐步探索进阶功能。
-
-:::note 找不到某项设置？
-「更多」页面顶部提供**全局搜索**，可直接搜索设置项名称；常用进阶开关分布在 **更多 → 设置** 分组中，例如 **内核配置**（DNS/TUN 等）、**分应用代理**（应用黑白名单）、**增强工具**（智能启停、休眠支持、禁用 QUIC 等）与 **备份与恢复**。
+:::note 本文源码依据
+`lib/common/navigation.dart`、`lib/enum/enum.dart`（`PageLabel`、`RuleAction`）、`lib/views/tools.dart`、`lib/views/config/config.dart`、`README.md`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明、`core/Clash.Meta/adapter/outbound/`。
 :::

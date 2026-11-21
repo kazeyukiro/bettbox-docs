@@ -2,127 +2,122 @@
 sidebar_position: 2
 ---
 
-# 配置与订阅指南
+# 配置与订阅
 
-在 Bettbox 中管理订阅的方式与 FlClash 一脉相承。无论你使用订阅链接、本地文件、二维码还是剪贴板，都能快速上手。
-
----
-
-## 1. 自动同步（通过 URL 导入）
-
-这是**最推荐**的方式，支持自动更新节点列表。
-
-**操作步骤：**
-
-1. **复制链接**：从你的服务提供商处获取 Clash / Mihomo 订阅链接。
-2. **打开配置**：进入底部导航栏的 **配置** 页面。
-3. **点击添加**：点击右下角 **＋** 按钮，选择 **URL**（也可选「剪贴板」自动读取已复制的链接）。
-4. **保存配置**：输入名称与 URL，并设置 **自动更新间隔（分钟）**；若订阅经过 Age 加密，还需填写 **Age 私钥**。
-5. **激活**：在列表中点击该配置卡片，确认其处于选中状态。
-
-:::info 更新间隔的单位是分钟
-界面中的字段名为「自动更新间隔（分钟）」（`arb/intl_zh_CN.arb` 的 `autoUpdateInterval`），例如 12 小时填写 `720`、24 小时填写 `1440`。手工编辑配置文件后，应用会询问是否关闭该配置的自动更新，以免覆盖你的改动。
-:::
-
-:::tip 加密订阅（Age Key）
-若你的订阅经过 **Age 加密**，导入 URL 后还需填写对应的 **私钥** 才能解析：
-
-- 私钥必须以 `AGE-SECRET-KEY-` 开头，配对的是 X25519 密钥对（源码 `core/Clash.Meta/component/age/` 与 `config/config.go` 中的 `age.DecryptBytes`），**不是 AES 加密**。AES-256 在 Bettbox 中只用于**备份文件**的密码加密（「备份密码」）。
-- 配置编辑页右上角的钥匙按钮可「生成 X25519 密钥对」，也可从已有私钥反推公钥。
-- 「更多 → 工具箱 → **Age 加解密**」可生成密钥、加密或解密文本与配置文件；所有操作都在本机完成，私钥不会被保存或上传。该工具还支持后量子混合密钥（需 age v1.3+）。
-- 关于 Age Key 的背景与三种使用方式，见[博客文章](/blog/2026/06/08/mihomo-age-key)。
-:::
+Bettbox 的「配置」指一份 Mihomo YAML 配置及其订阅元数据。本页覆盖导入、更新、编辑、合并、备份与恢复。
 
 ---
 
-## 2. 手动导入（通过文件导入）
+## 1. 导入配置
 
-如果你已经下载了 `.yaml` 配置文件，可使用此方法。
+入口：**配置** 页面 → 右下角 **＋**。`lib/views/profiles/add_profile.dart` 提供四种入口：
 
-1. 点击 **＋** 按钮，选择 **文件**。
-2. 在系统文件选择器里定位并选中配置文件。
-3. 导入后，文件会存储到 Bettbox 的本地目录中。
-4. 之后如需替换文件内容，可在配置卡片 **⋮ → 编辑** 打开的页面里点「**上传**」重新选择文件。
-
----
-
-## 3. 扫描二维码导入
-
-1. 进入 **配置** 页面，点击 **＋** → **二维码**。
-2. 识别方式随平台不同：
-   - **移动端**：调用摄像头扫描订阅二维码。
-   - **桌面端**：从本地二维码图片识别（提示语为「请上传有效的二维码」）。
-   - **Android TV**：走「**扫码 / 局域网导入**」，用手机扫码或在局域网网页里粘贴订阅链接、上传配置后推送到电视。
-3. 识别后确认名称，点击 **保存**。
-
-:::tip 剪贴板导入
-添加页还提供「剪贴板」入口，会自动读取剪贴板中的订阅链接并校验是否为合法 URL，省去手动粘贴。
-:::
-
----
-
-## 4. 自动更新与备份
-
-入口：**更多 → 设置 → 备份与恢复**（界面文案：「通过 WebDAV 或本地同步数据」）。
-
-| 能力 | 说明 |
+| 入口 | 说明 |
 | :--- | :--- |
-| **自动更新** | URL 导入时可设置自动更新间隔（分钟），到期自动拉取最新节点；也可手动「同步」或「全部同步」。 |
-| **WebDAV 备份** | 备份数据到 WebDAV，换机/重装后可还原。 |
-| **本地备份** | 备份数据到本地文件，不依赖网络。 |
-| **自动备份** | 配置新增或修改后自动备份到 WebDAV。 |
-| **备份密码** | 可设置密码，使用 **AES-256** 加密备份；留空则不加密。 |
-| **恢复策略** | 「兼容」保留本机已有配置与脚本、按 ID 合并备份内容；「覆盖」清空本机数据、完全替换为备份内容；也可选择「仅恢复配置文件」。 |
-| **双重配置检测** | 内置双重配置检测验证与保护机制，异常配置会被拦截并提示，避免错误配置导致整体失效。 |
+| **URL** | 粘贴订阅链接；导入后可设置名称、自动更新间隔、Age 私钥 |
+| **剪贴板** | 自动读取剪贴板中的订阅链接（`clipboardDesc`） |
+| **文件** | 选择本地配置文件 |
+| **二维码** | 移动端调用相机；桌面端上传二维码图片（`pleaseUploadValidQrcode`） |
 
-:::caution 迁移到新设备
-更换手机/电脑时，建议先通过 WebDAV 或本地备份，再在新设备还原，避免订阅与个性化设置丢失。
+Android TV 另有扫码 / 局域网导入弹窗（`tv_qr_import_dialog.dart`）：用手机扫码，或在网页中粘贴订阅链接、上传配置后推送到电视。
+
+也可以点击兼容的安装链接直接导入。Android manifest 注册了 `clash`、`clashmeta`、`flclash`、`bettbox` 四种 `install-config` scheme。
+
+---
+
+## 2. 自动更新
+
+配置编辑页包含「自动更新」开关与字段 **自动更新间隔（分钟）**（`autoUpdateInterval`）。单位是**分钟**，不是小时：例如 12 小时填 `720`，24 小时填 `1440`。
+
+源码 `lib/views/profiles/edit_profile.dart` 中，手工修改配置后会提示 `profileHasUpdate`：「配置文件已经修改，是否关闭自动更新？」——这是为了避免自动更新覆盖本地改动。
+
+---
+
+## 3. Age 加密订阅
+
+若订阅内容由 Age 公钥加密，需要在配置编辑页填写 **Age 私钥（可选）**（`ageSecretKeyOptional`），私钥以 `AGE-SECRET-KEY-` 开头。
+
+- 解密路径：`core/Clash.Meta/component/age/age.go` 使用 `age.DecryptBytes`；`core/profile_import.go`、`core/hub.go`、`core/provider_expand.go` 等处调用。
+- 密钥类型：X25519，另有后量子混合类型 `MLKEM768-X25519`（`lib/pages/toolbox/age_tool.dart` 的 `hybrid`）。
+- 密文格式：age 装甲格式，头为 `-----BEGIN AGE ENCRYPTED FILE-----`。
+- **AES-256 不是订阅加密算法**；中文文案 `backupPasswordDesc` 写明 AES-256 用于**备份文件**密码加密。
+- 配置编辑页右上角的钥匙按钮可生成 X25519 密钥对，并从私钥反推公钥。
+- 若自己写配置，Mihomo 配置示例 `core/Clash.Meta/docs/config.yaml` 中有 `age-secret-key` 字段，并可在 Provider 的 `header` 中携带 `X-Age-Public-Key`。
+
+背景说明见[博客文章](/blog/2026/06/08/mihomo-age-key)。
+
+---
+
+## 4. 编辑、上传与导出
+
+在配置列表中打开配置的编辑页（`lib/views/profiles/edit_profile.dart`），可：
+
+- 修改名称、URL、自动更新间隔、Age 私钥。
+- 切换 **托管模式** 并打开其设置面板（见[托管模式](/docs/guide/managed)）。
+- 对当前配置文件执行 **编辑 / 上传 / 导出文件**。
+- 打开 **覆写** 页面，为配置附加自定义规则。
+
+编辑器为 `plugins/code_forge` 提供的 code-forge，README 将其列为「高性能 Code-forge 编辑器」。
+
+### 覆写规则
+
+`lib/views/profiles/override_profile.dart` 提供规则覆写，规则类型来自 `RuleAction` 枚举（如 `DOMAIN`、`DOMAIN-SUFFIX`、`GEOSITE`、`IP-CIDR`、`RULE-SET`、`MATCH` 等），并有「启用覆写」「附加到原始规则」「应用到全局托管模式」等选项。
+
+:::caution 覆写模式
+v1.19.8 Release 说明明确：「覆写规则仅支持配置附加模式（避免误解）」。因此不要按「完全替换订阅规则」来理解该页面。
 :::
 
 ---
 
-## 5. 进阶：编辑配置文件
+## 5. 订阅合并
 
-Bettbox 内置重构版 **code-forge** 编辑器（`plugins/code_forge`），支持语法高亮与代码折叠，允许你直接微调配置。
+v1.19.8 新增「订阅合并」，源码为 `lib/views/profiles/merge_profile.dart`。
 
-- **如何操作**：在配置列表中点击卡片右上角 **⋮ → 编辑**，在打开的编辑页「配置」区域点「**编辑**」，即可用编辑器打开当前配置文件内容并保存。
-- **同页其他能力**：设置名称、URL、自动更新间隔、Age 私钥；「覆写」可为该配置叠加自定义内容；「导出文件」可导出配置；顶部还有「覆写脚本」入口（支持从代码导入脚本）。
-- **适用场景**：手动添加 DNS 规则、修改分流模式、调整自定义策略组。
-
-```yaml
-# 示例：在配置中追加一条自定义规则
-rules:
-  - DOMAIN-SUFFIX,example.com,DIRECT
-  - GEOIP,CN,DIRECT
-  - MATCH,Proxy
-```
+- 界面名称：**订阅合并**，说明为「将多个订阅合并，统一管理分流配置」。
+- 至少需要两个配置才能合并（`mergeProfileUnavailable`）。
+- 合并后可在配置列表中收起成员订阅（`bundleCollapse`）；成员数量上限见 `bundleMemberLimit` 文案。
+- 删除已合并的成员时，会提示该配置将从合并订阅中移除（`deleteMemberTip`）。
+- 合并页也提供托管模式设置入口。
 
 ---
 
-## 常见问题排查
+## 6. 备份与恢复
 
-| 现象 | 可能原因 | 解决方法 |
+入口：**更多 → 设置 → 备份与恢复**（`lib/views/backup_and_recovery.dart`）。
+
+| 项目 | 文案 / 行为 | 依据 |
 | :--- | :--- | :--- |
-| 导入时提示解析失败 | 链接格式非标准 Clash 格式，或订阅被加密 | 用订阅转换器处理后再导入；若是 Age 加密订阅，检查私钥是否以 `AGE-SECRET-KEY-` 开头且配对正确。 |
-| 更新订阅超时 | 当前网络无法连接订阅服务器 | 检查网络连接，或尝试更换 DNS 后再试。 |
-| 节点显示为 0 | 配置内无有效代理节点 | 确认订阅是否已过期，或联系服务商。 |
-| 测速无响应 | GeoIP / GeoSite 数据库未下载完整 | 前往 **更多 → 外部资源**，确保 GEO 内置资源已下载。 |
-| 修改配置后又变回原样 | 该配置仍开启自动更新 | 手工编辑后按提示关闭自动更新，或改用「覆写」。 |
+| **远程备份 / 恢复** | 备份到 WebDAV，从 WebDAV 恢复；可配置 WebDAV 地址与凭据 | `remoteBackupDesc`、`remoteRecoveryDesc`、`webDAVConfiguration` |
+| **本地备份 / 恢复** | 备份到本地文件，从文件恢复 | `localBackupDesc`、`localRecoveryDesc` |
+| **自动备份** | 配置新增或修改后自动备份 | `autoBackupDesc` |
+| **备份密码** | 使用 **AES-256** 加密备份，留空则不加密 | `backupPasswordDesc` |
+| **恢复策略** | `compatible`（兼容）：保留本机已有配置和脚本，按 ID 合并；`override`（覆盖）：清空本机配置和脚本，完全替换 | `RecoveryStrategy` 枚举及 `recoveryStrategyDesc_*` |
+| **恢复范围** | `RecoveryOption.all` 或 `RecoveryOption.onlyProfiles` | `lib/enum/enum.dart` |
+| **备份版本** | 可从多个备份版本中选择 | `selectBackupVersion` |
 
----
+v1.19.7 新增 WebDAV 自动备份与备份密码 AES 加密；v1.19.9 修复了兼容模式恢复备份时产生重复订阅的问题，并会按相同订阅 URL 复用本地配置 ID 与名称。
 
-## 与 FlClash 的兼容性
-
-Bettbox 起源于 FlClash，两者同基于 Mihomo 内核、使用相同的 Clash/Mihomo 配置格式：
-
-- **配置通用**：绝大多数 FlClash 的订阅链接与配置文件可直接导入使用；源码仍注册 `flclash://install-config` 深度链接以兼容原有导入方式。
-- **逻辑相近**：导入、测速、切换节点的交互保持一致，迁移成本低。
-- **更多能力**：在此之上新增了可视化内核配置、工具箱、备份与恢复、Age 加解密、脚本 UI 适配等增强。
-
-:::note 关于「100% 兼容」
-官方 README 只说明项目起源于 FlClash，并未承诺所有配置文件 100% 兼容。涉及自定义覆写脚本、平台专属选项的配置，仍建议在 Bettbox 中导入后核验一次。
+:::caution 换机建议
+迁移前先做一次备份，在新设备恢复后手动执行一次订阅同步，避免遗漏最新节点。
 :::
 
 ---
 
-[返回总指南](/docs/guide) | [前往节点与代理组](/docs/guide/proxies)
+## 7. 外部资源
+
+入口：**更多 → 外部资源**（`lib/views/resources.dart`）。界面说明为「查看外部资源或规则集合」。
+
+`geoItems` 列出四类内置资源：
+
+| 资源 | 文件用途 |
+| :--- | :--- |
+| GeoSite | 域名分类数据 |
+| MMDB | GeoIP 数据库 |
+| ASN | ASN 数据库 |
+| MRS | 规则集数据 |
+
+页面支持查看更新时间、同步全部、重置为内置下载地址，以及展示订阅的 Providers。`setup.dart` 会从 [bett-rules](https://github.com/appshubcc/bett-rules) 下载 `geosite.dat`、`geoip.metadb`、`GeoLite2-ASN-lite.mmdb` 与 `BundleMRS.7z` 作为内置数据。
+
+:::note 本文源码依据
+`lib/views/profiles/add_profile.dart`、`lib/views/profiles/edit_profile.dart`、`lib/views/profiles/merge_profile.dart`、`lib/views/profiles/override_profile.dart`、`lib/views/backup_and_recovery.dart`、`lib/views/resources.dart`、`lib/pages/toolbox/age_tool.dart`、`lib/enum/enum.dart`、`core/Clash.Meta/component/age/age.go`、`core/Clash.Meta/docs/config.yaml`、`arb/intl_zh_CN.arb`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明。
+:::

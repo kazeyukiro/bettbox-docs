@@ -1,41 +1,42 @@
 ---
-sidebar_position: 8
+sidebar_position: 12
 ---
 
 # 交流与反馈
 
-如果你在使用 **Bettbox** 的过程中遇到问题，或有更好的想法，可以通过以下渠道联系我们。
+以下链接均取自 Bettbox 官方 README 或 Release 说明。
 
 ---
 
-## 🚀 官方频道
+## 官方社区
 
-获取第一手更新资讯、测试版软件及重要通知。
+| 渠道 | 链接 | 用途 |
+| :--- | :--- | :--- |
+| Telegram 交流群 | [t.me/bettbox_chat](https://t.me/bettbox_chat) | 用户交流与非正式反馈 |
+| Telegram 频道 | [t.me/appshub_channel](https://t.me/appshub_channel) | 版本发布与公告 |
+| GitHub Issues | [appshubcc/Bettbox/issues](https://github.com/appshubcc/Bettbox/issues) | Bug 报告与功能建议 |
+| 源码仓库 | [appshubcc/Bettbox](https://github.com/appshubcc/Bettbox) | 源码、Release、讨论 |
+| 文档仓库 | [kazeyukiro/bettbox-docs](https://github.com/kazeyukiro/bettbox-docs) | 本站点文档 |
 
-👉 [点击加入 Appshub 频道](https://t.me/appshub_channel)
-
----
-
-## 👥 讨论群组
-
-与其他用户交流使用心得、反馈 Bug、分享配置。
-
-👉 [点击进入 Appshub 群组](https://t.me/appshub_chat)
-
----
-
-## 🐞 GitHub Issues
-
-代码层面的 Bug、功能建议与文档问题，欢迎提交 Issue：
-
-- [提交 Issue](https://github.com/appshubcc/Bettbox/issues)
-- [文档仓库](https://github.com/kazeyukiro/bettbox-docs)
-
-> **进群须知**：进群即视为同意群规。我们欢迎真实的声音，但拒绝政治、广告、拉踩及不文明行为，请共同维护一个纯净的技术讨论空间。
+:::note 群链接变化
+v1.19.7 及更早的 Release 模板中交流群为 `t.me/appshub_chat`；v1.19.8 / v1.19.9 与当前 README 已改为 **t.me/bettbox_chat**。
+:::
 
 ---
 
-## 反馈小贴士
+## 反馈建议
 
-- 提交 Issue 时，请附上 **复现步骤、系统/版本信息、Debug 日志**，高质量的反馈会被优先处理。
-- 订阅类问题请先联系你的服务商确认，再判断是否为客户端原因。
+Release 模板写明：书写认真、信息完整（包含必要的复现步骤和日志）的 Issue 会被优先处理。
+
+提交前建议准备：
+
+- Bettbox 版本与构建变体（Lite / Standard / Compatible）
+- 系统版本与设备架构
+- 复现步骤
+- Debug 日志（应用内「日志」页面可查看）
+
+订阅类问题请先向服务商核对订阅链接与节点格式，再判断是否为客户端问题。README 的常见问题中也建议：导入失败时优先在服务商后台重置订阅链接后重试。
+
+:::note 本文源码依据
+`README.md`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明中的社区链接与反馈提示。
+:::

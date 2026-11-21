@@ -8,7 +8,7 @@ const GITHUB_URL = 'https://github.com/appshubcc/Bettbox';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Bettbox',
-  tagline: 'Another Better Network Toolbox — 更好的网络工具箱',
+  tagline: 'Another Better Network Toolbox — 取自 Better Network Toolbox',
   favicon: 'img/favicon.png',
 
   url: 'https://www.bettbox.dpdns.org',
@@ -60,9 +60,9 @@ const config = {
         {
           name: 'description',
           content:
-            'Bettbox 是基于 Mihomo（Clash Meta）内核的多平台网络分流与 DNS 调试工具，支持 Android、Windows、macOS、Linux。开箱即用、前台流畅、后台省电。',
+            'Bettbox 是基于 Mihomo 内核的多平台网络分流与 DNS 调试工具，支持 Android 7.0+、Windows 8.1+、macOS 12.0+ 与 Linux Kernel 5.4+。提供更丰富的参数可视化调节，随时按需切换 Lite 与 Standard 版本。',
         },
-        {name: 'keywords', content: 'Bettbox, Mihomo, Clash Meta, 网络分流, DNS 调试, 工具箱, 下载'},
+        {name: 'keywords', content: 'Bettbox, Mihomo, Clash Meta, 网络分流, DNS 调试, 工具箱, 托管模式, 节点库, 下载'},
         {name: 'theme-color', content: '#f3efea', media: '(prefers-color-scheme: light)'},
         {name: 'theme-color', content: '#16151a', media: '(prefers-color-scheme: dark)'},
       ],
@@ -122,7 +122,10 @@ const config = {
             items: [
               {label: '快速开始', to: '/docs/getting-started'},
               {label: '功能指南', to: '/docs/guide'},
+              {label: '配置与订阅', to: '/docs/guide/config'},
+              {label: '托管模式', to: '/docs/guide/managed'},
               {label: '工具箱', to: '/docs/guide/toolbox'},
+              {label: '应用更新', to: '/docs/guide/updates'},
               {label: '从源码构建', to: '/docs/development'},
               {label: '常见问题', to: '/docs/faq'},
             ],
@@ -136,7 +139,7 @@ const config = {
               },
               {
                 label: 'Telegram 交流群',
-                href: 'https://t.me/appshub_chat',
+                href: 'https://t.me/bettbox_chat',
               },
               {label: 'GitHub Issues', href: `${GITHUB_URL}/issues`},
             ],

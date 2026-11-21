@@ -1,51 +1,94 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # 工具箱
 
-README 中的「全能工具箱」对应应用内的 **工具箱** 页面（界面文案：「网络诊断调试与实用工具」），入口为 **更多 → 工具箱**。源码 `lib/views/toolbox.dart` 定义了以下工具，界面名称取自简体中文语言包 `arb/intl_zh_CN.arb`。
+入口：**更多 → 工具箱**（`PageLabel.toolbox`，中文说明「网络诊断调试与实用工具」）。v1.19.7 新增数十款网络调试工具，v1.19.8 又加入流量统计与 IP 风险提示。
 
 ---
 
-## 内置工具一览
+## 1. 内置工具
 
-| 工具 | 界面说明 | 典型用途 |
+`lib/views/toolbox.dart` 中定义的工具及其说明（`arb/intl_zh_CN.arb`）：
+
+| 工具 | 界面说明 | 用途 |
 | :--- | :--- | :--- |
-| **网速测试** | 测量下载、上传速度与网络延迟 | 验证节点实际带宽；可选测速服务器、HTTP/3 回退 HTTP/2 / HTTP/1.1 |
-| **路由追踪** | 查看域名或 IP 在内核中的 DNS 与规则匹配过程 | 排查「为什么这个域名走了代理/直连」 |
-| **IP 全能查** | 查看本机出口 IP，或查询任意 IP 与域名 | 核对出口归属、ASN、运营商信息 |
-| **MRS 速查** | 快速查询域名或 IP 所属的 GEODATA / RULE-SET 规则集 | 确认规则集是否覆盖目标域名 |
-| **DNS 查询** | 按规则、系统或指定服务器解析域名 | 对比「跟随规则 / 系统 DNS / 指定服务器」结果，发现污染与分流差异 |
-| **NAT 检测** | 检测 NAT 类型、外部地址与 UDP 连通性 | 排查 P2P / 游戏 / UDP 不通 |
-| **本地 Ping** | 直连测试 ICMP、TCP、UDP 延迟与丢包 | 在不经过代理的情况下测目标延迟 |
-| **iPerf3 工具** | 测试局域网内设备之间的带宽，兼容官方 iperf3 | 局域网测速；服务端只在本页面打开时运行 |
-| **Age 加解密** | 生成密钥，加密或解密文本与配置文件 | 生成 X25519 密钥对、解密 Age 加密订阅、加密自定义内容 |
-| **连通性测试** | 检测常用服务可用性，支持按节点批量检测 | 批量检查流媒体解锁 / 服务可用性 |
+| 网速测试 | 测量下载、上传速度与网络延迟 | 测速服务器由第三方提供，见 `speedTestCredit` |
+| 路由追踪 | 查看域名或 IP 在内核中的 DNS 与规则匹配过程 | 排查规则命中与解析过程 |
+| IP 全能查 | 查看本机出口 IP，或查询任意 IP 与域名 | 出口归属、ASN 等信息 |
+| MRS 速查 | 快速查询域名或 IP 所属的 GEO / RULE-SET 规则集 | 验证规则集覆盖 |
+| DNS 查询 | 按规则、系统或指定服务器解析域名 | 对比解析差异，发现污染或分流差异 |
+| NAT 检测 | 检测 NAT 类型、外部地址与 UDP 连通性 | 使用 STUN 服务器验证 |
+| 本地 Ping | 直连测试 ICMP、TCP、UDP 延迟与丢包 | 不经过代理的连通性检查 |
+| iPerf3 工具 | 测试局域网设备间带宽，兼容官方 iperf3 | 服务端只在本页面打开时运行 |
+| Age 加解密 | 生成密钥，加密或解密文本与配置文件 | X25519 / 后量子混合密钥 |
+| 连通性测试 | 检测常用服务可用性，支持按节点批量检测 | 流媒体与服务可用性 |
+| 流量统计 | 按日、周、月查看流量具体去向 | 域名 / 进程 / 节点 / 规则维度 |
 
-:::info 工具箱布局可自定义
-进入编辑模式后，**点按卡片切换大小、长按拖动调整位置**（桌面端可直接拖动，Android TV 选中卡片后按确认键切换大小），修改会保存。
+### 布局自定义
+
+`toolboxEditTip` 等文案说明：
+
+- 移动端：点按卡片切换大小，长按拖动调整位置。
+- 桌面端：点击卡片切换大小，拖动调整位置。
+- Android TV：选中卡片后按确认键切换大小。
+
+修改会保存。
+
+---
+
+## 2. Age 加解密
+
+源码：`lib/pages/toolbox/age_tool.dart` 与 `core/toolbox/age_tool.go`。
+
+- 支持 X25519 密钥对与后量子混合类型 `MLKEM768-X25519`（`hybrid`）。
+- 可从已有私钥生成公钥；密钥相关操作在标签页「密钥」中完成。
+- 加密需填写 `age1…` 接收者公钥；解密需填写 `AGE-SECRET-KEY-` 私钥。
+- 密文使用 age 装甲格式，文件头常量为 `armor.Header`。
+- 单次处理文件上限 **8 MB**（`_maxAgeFileSize = 8 * 1024 * 1024`）。
+- 界面明确提示：`ageToolTip`——所有操作都在本机完成，私钥不会被保存或上传。
+
+订阅导入时使用私钥的方法见[配置与订阅](/docs/guide/config#3-age-加密订阅)，背景见[博客文章](/blog/2026/06/08/mihomo-age-key)。
+
+---
+
+## 3. 流量统计
+
+v1.19.8 新增，源码 `lib/pages/toolbox/traffic_stats.dart`。
+
+- 默认开关为「启用流量统计」（`trafficStatsEnable`）。
+- 开启「记录明细」后记录域名、进程、节点和规则的去向；关闭后只记录总量（`trafficStatsDetailDesc`）。
+- 视图维度：今日 / 本周 / 本月；排行维度：域名、进程、节点、配置（`hosts`、`processes`、`nodes`、`profiles`）。
+- 可设置「数据保留」天数、清除全部数据，并选择是否优先从网站获取站点图标。
+- v1.19.9：进程排行支持点击跳转——Android 打开应用系统详情页，桌面端在文件管理器中定位程序文件。
+- 首页「流量统计」卡片可点击进入该页面。
+
+---
+
+## 4. IP 风险提示
+
+v1.19.8 在工具箱与首页「网络检测」中加入专业 IP 风险数值，可选自动开启或关闭。
+
+相关枚举：`IpRiskLevel`（低 / 中 / 高 / 极高风险）、`IpRiskGroup`（数据中心 / 黑名单 / 代理）、`IpRiskAmount`、`IpRiskShare`、`IpRiskConnection`。
+
+界面文案 `ipRiskNoteIndirect` 提到 Scamalytics 的欺诈值并说明其估算性质；`ipRiskAlert` 用于风险提示。该数值仅供参考（`detectionTip` 也标注「依赖第三方 API，仅供参考」）。
+
+---
+
+## 5. iPerf3 与其他工具细节
+
+- iPerf3：`iperfServerTip` 说明服务端只在本页面打开时运行，离开页面自动停止，运行期间屏幕保持常亮。
+- DNS 查询：`dnsQueryCompareDesc` 说明会同时用「跟随规则」「系统 DNS」「指定服务器」解析。
+- 本地 Ping：`localPingListLimit` 说明仅显示最近若干条，复制结果可查看全部。
+- NAT 检测：`natServer` / `natServerCustom` 可指定 STUN 服务器。
+
+---
+
+## 6. 外部资源
+
+测速、规则与 GEO 判定依赖内置数据。可在 **更多 → 外部资源** 查看 GeoSite、MMDB、ASN、MRS 四项资源的状态与更新时间，详见[配置与订阅](/docs/guide/config#7-外部资源)。
+
+:::note 本文源码依据
+`lib/views/toolbox.dart`、`lib/pages/toolbox/age_tool.dart`、`lib/pages/toolbox/traffic_stats.dart`、`lib/pages/toolbox/iperf.dart`、`lib/pages/toolbox/dns_query.dart`、`lib/pages/toolbox/local_ping.dart`、`lib/pages/toolbox/nat_test.dart`、`lib/enum/enum.dart`、`core/toolbox/age_tool.go`、`arb/intl_zh_CN.arb`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明。
 :::
-
----
-
-## Age 加解密工具
-
-「工具箱 → Age 加解密」对应源码 `lib/pages/toolbox/age_tool.dart` 与 `core/toolbox/age_tool.go`：
-
-- 可生成新密钥对（X25519），也可从已有私钥生成公钥；支持后量子混合密钥（私钥前缀 `AGE-SECRET-KEY-PQ-`，需 age v1.3 及以上）。
-- 加密时填写一个或多个 `age1…` 格式的接收者公钥；密文为 `-----BEGIN AGE ENCRYPTED FILE-----` 装甲格式。
-- 支持直接「使用当前配置的私钥」解密订阅内容；单次处理文件上限 8 MB。
-- **所有操作都在本机完成，私钥不会被保存或上传**。
-
-订阅导入时使用 Age 私钥的方法见 [配置与订阅指南](/docs/guide/config)，背景介绍见[博客文章](/blog/2026/06/08/mihomo-age-key)。
-
----
-
-## 外部资源
-
-测速、规则与 GEO 判定依赖 GeoIP / GeoSite 数据。相关下载与状态在 **更多 → 外部资源**（界面文案：「查看外部资源或规则集合」）中查看，其中「GEO 内置资源」由项目维护的 [bett-rules](https://github.com/appshubcc/bett-rules) 数据提供。
-
----
-
-[返回总指南](/docs/guide) | [返回文档首页](/docs/intro)

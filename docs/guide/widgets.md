@@ -1,70 +1,102 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 ---
 
-# 小组件与个性化
+# 首页与小组件
 
-Bettbox 不仅是一个代理工具，也注重「用得顺手、看得舒心」。本页介绍 APP首页实时网速小组件、测速动画、主题图标定制，以及进阶的脚本 UI 适配。
+本页区分两类能力：**App 内首页卡片**与 **Android 系统桌面小组件**。源码中它们是两套独立实现。
 
 ---
 
-## APP首页实时网速小组件（首页卡片）
+## 1. 首页卡片（Dashboard）
 
-Bettbox 的「小组件」是 **App 首页（Dashboard）内的卡片**，不是系统桌面小组件。源码 `lib/enum/enum.dart` 的 `DashboardWidget` 枚举定义了可选卡片，例如：
+`lib/enum/enum.dart` 的 `DashboardWidget` 枚举定义了可添加到首页的卡片：
 
-| 类别 | 卡片 |
+| 类别 | 卡片（枚举值） |
 | :--- | :--- |
-| **速度与状态** | 实时网速（大/小两种）、流量统计、网络检测、连接数、内存信息、内网 IP |
-| **快捷开关** | 出口模式、TUN 按钮（桌面）、VPN 按钮（Android）、系统代理按钮（桌面）、启动按钮、IPv6 开关、唤醒锁开关 |
-| **内核覆写** | 覆写 DNS、覆写 Sniffer、覆写 NTP |
-| **信息展示** | 订阅（Providers）信息、FCM 状态、在线面板、流媒体解锁 |
+| 速度 / 状态 | `networkSpeed`、`networkSpeedSmall`、`trafficUsage`、`networkDetection`、`connectionsCount`、`memoryInfo`、`intranetIp`、`profileInfo` |
+| 快捷开关 | `outboundModeV2`、`outboundMode`、`tunButton`（桌面）、`vpnButton`（Android）、`systemProxyButton`（桌面）、`ipv6Switch`、`wakelockSwitch`、`startButton` |
+| 内核覆写 | `snifferOverride`、`ntpOverride` |
+| 信息展示 | `providersInfo`、`fcmStatus`、`onlinePanel`、`mediaUnlock`、`mediaUnlockSmall`、`toolboxShortcut`（Android） |
 
-- **实时网速**：上行 / 下行速率一瞥即知，同时可查看全局运行状态与已用流量。
-- **尺寸与布局**：网速、流量、网络检测等卡片支持「小 / 宽 / 高 / 大」多种尺寸（源码 `DashboardTileSize`），首页布局可自定义。
-- **通知栏**：Android 端还可在「增强工具」中开启「在通知栏显示网速和订阅信息」，不打开 App 也能看状态。
+说明：
 
-:::note 关于「添加到桌面」
-源码中没有注册 Android AppWidget（`AppWidgetProvider`），也未引入桌面小组件依赖，因此**不能**把首页卡片添加到系统桌面。首页卡片只在 App 内展示。
-:::
-
----
-
-## 30 种测速动画
-
-Bettbox 内置 **30 种测速动画**（`DelayAnimationType` 枚举中除 `none` 外的 30 项，基于 SpinKit 动效），让节点延迟测试的等待过程也赏心悦目。
-
-- 在「**延迟动画**」中自由切换，也可选择「无动画」。
-- 开启「**同步动画到其他页面**」后，同一动画会应用到其他加载场景。
+- `startButton` 的 `GridItem` 设置 `isDeletable: false`，不能被删除。
+- 平台限定卡片在枚举中通过 `platforms` 标注，例如 `tunButton` / `systemProxyButton` 仅桌面，`vpnButton` / `toolboxShortcut` 仅 Android。
+- 尺寸由 `DashboardTileSize` 定义：`small(1,1)`、`wide(2,1)`、`tall(1,2)`、`large(2,2)`；`GridItem` 的 `crossAxisCellCount` 为 4 或 8。
+- `networkSpeedSmall` / `networkSpeed`、`outboundMode` / `outboundModeV2`、`mediaUnlockSmall` / `mediaUnlock` 是可互换的大小变体（`_variantGroups`）。
+- v1.19.9 优化仪表盘启动按钮卡片与顶部启动开关的联动，首页启动时间小部件可选关闭。
 
 ---
 
-## 主题与图标定制
+## 2. Android 系统桌面小组件
 
-- **色彩主题**：支持主题模式（浅色/深色）、主题色彩、纯黑模式，以及字体、文字缩放等显示偏好。
-- **平台专属**：Android 可手动切换深色系桌面 App 图标，Windows 可取反托盘图标颜色，macOS 可设置是否在 Dock 栏保留图标。
-- **代理组图标**：「图片配置」支持自定义代理组 ICON 图标，并可重置图标缓存。
-- **自定义图标 / 标题**：更换 App 图标与显示名称，融入你的桌面风格。
-- **个性化开关**：上述偏好都作为内置可视化选项提供，无需修改任何配置文件。
+**v1.19.8 新增 Android 原生桌面小组件**（Release 说明）。这与首页卡片不是同一个东西。
+
+源码位置：
+
+- 接收器：`android/app/src/main/AndroidManifest.xml` 注册 `HomeWidgetLargeProvider`、`HomeWidgetWideProvider`、`HomeWidgetSquareProvider`
+- Kotlin 实现：`android/app/src/main/kotlin/com/appshub/bettbox/widget/`
+- Flutter 推送：`lib/manager/android_manager.dart` 监听 `homeWidgetSnapshotProvider` 并调用 `app.updateHomeWidget`
+
+| 规格 | 中文名 | 内容 | 最小尺寸 |
+| :--- | :--- | :--- | :--- |
+| Large | 订阅 · 大号 | 流量用量、到期时间、当前节点与 VPN 开关 | 250×110 dp |
+| Wide | 订阅 · 宽条 | 流量用量、当前节点与 VPN 开关 | 250×40 dp |
+| Square | 订阅 · 方块 | 用量圆环、当前节点与刷新 | 110×110 dp |
+
+其他事实：
+
+- 三种规格均支持横向 / 纵向调整大小（`resizeMode="horizontal|vertical"`）。
+- `updatePeriodMillis="0"`：不由系统定时轮询；数据由 App 在运行时通过 `SharedPreferences` 快照推送并刷新。
+- 小组件上的 VPN 开关对应 `CHANGE` 动作，刷新按钮对应 `WIDGET_REFRESH`；未配置时显示 `home_widget_empty`：「打开 Bettbox 完成设置」。
+- 该能力**仅 Android 有**；其他平台没有注册的原生桌面小组件。
 
 ---
 
-## 脚本 UI 适配（进阶）
+## 3. 测速动画
 
-自 **v1.18.8** 起，Bettbox 新增了「JS 脚本覆写可视化开关适配 API」（见该版本 Release 说明）。外置覆写脚本可声明可视化开关，Bettbox 自动渲染为可用界面；官方 README 以 [AIsouler 的脚本/配置分享](https://github.com/AIsouler/MyClash) 为例。
+`DelayAnimationType` 枚举共 31 项：
 
-### 最简声明
+- `none`（无动画）
+- 其余 30 项为实际动效，例如 `rotatingCircle`、`pulse`、`fadingCircle`、`dualRing`、`pumpingHeart`、`waveSpinner` 等。
 
-在你的脚本首行添加：
+可在「延迟动画」中切换，v1.19.5 起还支持将动画同步到其他加载页面。
+
+---
+
+## 4. 主题、图标与显示
+
+`lib/views/tools.dart` 与 `lib/views/theme.dart` 中的相关设置：
+
+| 项目 | 中文文案 |
+| :--- | :--- |
+| 主题模式 | 主题模式 |
+| 主题色彩 | 主题色彩 |
+| 字体修复 | `harmonyFont` |
+| 文本缩放 | 文本缩放 |
+| 图标设置 / 图标集 | 图标设置 / 图标集 |
+| 桌面侧边栏悬浮卡片 | `sidebarFlyout`，可自定义入口 |
+| 托盘图标反色 / Dock 图标 | `trayIconInvert`、`keepDockIcon` |
+
+版本变化：
+
+- v1.19.5 引入「无界」主题，并新增首页 / 工具箱可选浅色大图标。
+- v1.19.7 新增 Android 12+ 首色自动莫奈取色、macOS Dock 图标与窗口显示状态同步。
+- v1.19.8 用内置路由 SVG 矢量图标库替换平台图标，新增内置图标集。
+- v1.19.9 引入 Phosphor 图标包，Android 端默认开启；移除深色桌面图标切换开关，改用矢量自适应图标。
+
+---
+
+## 5. 覆写脚本的图形界面适配
+
+README 说明外置 JS 覆写脚本可适配图形化 UI。最简声明：
 
 ```js
 const Compatible_With_Bettbox = { ruleOptionsEnable: true };
 ```
 
-即可让 Bettbox 识别并使用内置的可视化开关。
-
-### 声明策略组开关
-
-若脚本同时包含策略组开关与其他功能开关，可用 `policyGroupOptions` 声明哪些属于策略组；未声明的开关会被收进「⚙️ 其他设置」二级菜单，策略组开关保持原有列表展示：
+若脚本中同时包含策略组开关与其他功能开关，可用 `policyGroupOptions` 声明策略组开关名称；未声明的开关会归入「⚙️ 其他设置」二级菜单：
 
 ```js
 const Compatible_With_Bettbox = {
@@ -74,10 +106,10 @@ const Compatible_With_Bettbox = {
 };
 ```
 
-> 未声明 `policyGroupOptions`、或声明的名称与开关不匹配时，展示效果与旧版本完全一致（所有开关平铺展示）。
+未声明 `policyGroupOptions` 或名称不匹配时，所有开关平铺展示。
 
-配置页顶部的「覆写脚本」入口可管理脚本，也支持从代码导入脚本；编辑器为内置的 code-forge。
+脚本管理入口：**更多 → 覆写脚本**（`lib/views/profiles/scripts.dart`），支持导入 URL、编辑、导出、同步与删除，并可管理内置「托管模式」脚本（见[托管模式](/docs/guide/managed)）。
 
----
-
-[返回总指南](/docs/guide) | [前往工具箱](/docs/guide/toolbox)
+:::note 本文源码依据
+`lib/enum/enum.dart`（`DashboardWidget`、`DashboardTileSize`、`DelayAnimationType`）、`lib/views/dashboard/`、`lib/views/tools.dart`、`lib/views/theme.dart`、`lib/views/profiles/scripts.dart`、`lib/manager/android_manager.dart`、`android/app/src/main/AndroidManifest.xml`、`android/app/src/main/kotlin/com/appshub/bettbox/widget/`、`android/app/src/main/res/xml/home_widget_*_info.xml`、`README.md`、v1.19.5 / v1.19.7 / v1.19.8 / v1.19.9 Release 说明。
+:::

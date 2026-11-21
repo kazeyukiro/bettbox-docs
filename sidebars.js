@@ -12,9 +12,11 @@ const sidebars = {
       items: [
         'guide/config',
         'guide/proxies',
+        'guide/managed',
         'guide/apps',
         'guide/widgets',
         'guide/toolbox',
+        'guide/updates',
       ],
     },
     { type: 'doc', id: 'migration', label: '🔄 迁移指南' },

@@ -1,69 +1,69 @@
 ---
-sidebar_position: 7
+sidebar_position: 11
 ---
 
-# 从 FlClash 迁移到 Bettbox
+# 从 FlClash 迁移
 
-如果你正在使用 **FlClash**，可以较平滑地切换到 **Bettbox**：两者同基于 Mihomo 内核、使用相同的 Clash/Mihomo 配置格式，导入、测速与切换节点的交互一脉相承。
-
----
-
-## 为什么要迁移到 Bettbox？
-
-相比原版 FlClash，Bettbox 带来了以下增强（依据官方 README 与源码）：
-
-- **功耗与后台**：多平台无感智能启停、移动端 Doze 休眠策略，降低待机耗电。
-- **增强工具**：一键禁用 QUIC（可仅放行中国 QUIC 流量而非全部禁用）、托盘菜单控制代理组、通知栏网速显示等。
-- **可视化设置**：「内核配置」提供 DNS、NTP、Sniffer、Tunnel 等可视化调节界面，改动即时生效。
-- **稳定容错**：内置双重配置检测验证与保护机制，优化多平台极端场景边界问题。
-- **全能工具箱**：网速测试、路由追踪、DNS 查询、NAT 检测、Age 加解密等调试工具，详见 [工具箱](/docs/guide/toolbox)。
-- **个性化与脚本适配**：30 种测速动画、APP首页实时网速小组件、JS 覆写脚本可视化开关适配。
-- **备份能力**：WebDAV 与本地备份、自动备份、AES-256 备份密码加密。
+README 致谢中明确写明：**Bettbox 起源于 [FlClash](https://github.com/chen08209/FlClash)**。两者都基于 Mihomo，配置格式一致。
 
 ---
 
-## 迁移步骤
+## 1. 可以保留什么
 
-### 1. 导出配置
-在 **FlClash** 中：
-- 前往 **配置** 列表。
-- 点击正在使用的配置条目，选择 **导出为文件**，或直接复制订阅链接。
+| 内容 | 说明 | 依据 |
+| :--- | :--- | :--- |
+| 订阅链接 | 可直接重新导入 | `lib/views/profiles/add_profile.dart` |
+| Clash / Mihomo YAML 配置 | 使用同一内核配置格式 | `core/Clash.Meta/` |
+| `flclash://install-config` 链接 | Android manifest 仍注册该 scheme | `AndroidManifest.xml` |
+| 节点分享链接 | 节点库支持 URI / Base64 / YAML | `lib/views/profiles/nodes.dart` |
 
-### 2. 安装 Bettbox
-- 前往官方 [Releases](https://github.com/appshubcc/Bettbox/releases/latest) 下载最新安装包。
-- **注意**：Bettbox 使用独立包名 `com.appshub.bettbox`（见 `android/app/build.gradle.kts`），两者可以共存，但**不能同时开启 VPN 服务**。
+源码注册的 install-config scheme 共四个：`clash`、`clashmeta`、`flclash`、`bettbox`。
 
-### 3. 导入并开启
-- 在 **Bettbox** 中点击 **＋** 号，用「URL」「文件」「二维码」或「剪贴板」重新导入。
-- 建议进入 **更多 → 设置 → 分应用代理**，重新确认黑白名单设置，因为新安装的应用需要重新授予 VPN 权限。
-
----
-
-## 迁移注意事项
-
-### 关于包名（Package Name）
-Bettbox 使用独立包名。如果你在系统设置里针对 FlClash 设置了「电池不优化」「常驻通知栏」等，需要在 **Bettbox** 上重新设置一次。源码仍注册 `flclash://install-config` 深度链接，兼容原有导入链接格式。
-
-### 关于订阅更新
-迁移后，请在 Bettbox 中手动执行一次 **同步**（或「全部同步」），确保获取到最新的节点列表。Bettbox 的自动更新间隔以**分钟**为单位。
-
-### 关于配置冲突
-如果你在 FlClash 中开启了 **自动启动**，建议迁移后关闭它，以免两个应用在开机时竞争 VPN 权限。
-
-:::caution 不要同时运行
-Bettbox 与 FlClash 可共存于同一设备，但**请务必只开启其中一个的 VPN / TUN 服务**，否则会因争抢虚拟网卡而冲突。
+:::caution 兼容性边界
+README 只说明项目起源于 FlClash，并未承诺「100% 兼容」。涉及自定义覆写脚本或平台专属选项的配置，建议导入后逐项核验。
 :::
 
 ---
 
-## 常见问题
+## 2. 迁移步骤
 
-**Q：导入 FlClash 配置后无法测速？**  
-A：请检查 **更多 → 外部资源**，确保 GEO 内置资源已下载完整；也可在「内核配置」中检查健康检查 / 测试 URL 设置。
+1. 在 FlClash 中复制订阅链接或导出配置文件。
+2. 从 [Releases](https://github.com/appshubcc/Bettbox/releases/latest) 安装 Bettbox。Android 包名为 `com.appshub.bettbox`（`android/app/build.gradle.kts`），与 FlClash 不同，可同时安装。
+3. 在 Bettbox 的 **配置** 页面点击 **＋**，用 URL / 文件 / 二维码 / 剪贴板导入。
+4. 点击配置卡片激活，进入 **代理** 页面选择节点。
+5. 重新确认「分应用代理」与后台权限设置：这是应用级设置，不会随配置文件迁移。
+6. 手动同步一次订阅，确保节点为最新。
 
-**Q：原版 FlClash 的功能都在吗？**  
-A：绝大多数核心功能都在，并新增了前述增强能力。官方 README 说明项目**起源于** FlClash，但并未承诺所有配置文件 100% 兼容；涉及自定义覆写脚本或平台专属选项的配置，建议导入后核验一次。
+:::tip 不要同时开启两个 VPN
+Bettbox 与 FlClash 都通过系统 VPN / TUN 接管流量，建议同一时间只运行其中一个，避免虚拟网卡冲突。
+:::
 
 ---
 
-[返回文档首页](/docs/intro) | [前往配置与订阅指南](/docs/guide/config)
+## 3. 迁移后可用的增强能力
+
+按 Release 说明与源码：
+
+- **托管模式**：内置脚本生成代理组与规则（v1.19.8，见[托管模式](/docs/guide/managed)）
+- **订阅合并**：多个订阅统一管理（v1.19.8）
+- **节点库与落地节点**：导入单节点、WARP 生成 WireGuard、指定前置代理（v1.19.9）
+- **应用内更新**：自动检查、下载、校验与安装（v1.19.9）
+- **Android 原生桌面小组件**：三种规格（v1.19.8）
+- **流量统计与 IP 风险提示**：（v1.19.8）
+- **工具箱**：测速、路由追踪、DNS 查询、iPerf3、Age 加解密等（v1.19.7 起，见[工具箱](/docs/guide/toolbox)）
+- **备份与恢复**：WebDAV / 本地、AES-256 备份密码（v1.19.7，见[配置与订阅](/docs/guide/config#6-备份与恢复)）
+- **Lite / Standard 变体**：按需选择内核组件（v1.19.8 / v1.19.9）
+
+---
+
+## 4. 迁移后排障
+
+**Q：导入后节点正常但无法测速？**  
+A：到 **更多 → 外部资源** 检查 GeoSite / MMDB / ASN / MRS 状态；也可在「内核配置 → 通用」检查 `testUrl` 等设置。
+
+**Q：配置里的 DNS 选项不见了？**  
+A：当前版本已移除应用侧 DNS 覆写页面，DNS 遵循配置文件或托管脚本，详见[节点与代理组](/docs/guide/proxies#5-dns-设置的变化)。
+
+:::note 本文源码依据
+`README.md`、`android/app/build.gradle.kts`、`android/app/src/main/AndroidManifest.xml`、`lib/views/profiles/`、`lib/views/access.dart`、`arb/intl_zh_CN.arb`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明。
+:::

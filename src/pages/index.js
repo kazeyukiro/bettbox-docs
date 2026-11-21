@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import ParticleField from '@site/src/components/ParticleField';
 import Reveal from '@site/src/components/Reveal';
@@ -190,24 +189,21 @@ const FEATURE_ICONS = [
 ];
 
 const FEATURES = [
-  {title: '开箱即用', desc: '预置权限引导、TUN 与托管分流模式，安装后即可使用。'},
-  {title: '轻量畅快', desc: '移动端低功耗、桌面端后台占用低，界面动画流畅。'},
-  {title: '安全可信', desc: '内核跟随 Mihomo 主线，各平台只申请最小权限；README 说明 Windows 版使用 SignPath 提供的 OV 代码签名证书。'},
-  {title: '稳定容错', desc: '优化多平台极端网络环境下的边界问题，README 提到配置双重校验，适合长期运行。'},
-  {title: '架构优化', desc: '桌面端原生支持 ARM64，持续维护面向旧设备的 Compatible 兼容版。'},
-  {title: '智能守护', desc: '多平台智能启停、移动端 Doze 休眠适配，桌面端托盘快捷控制代理组。'},
-  {title: '可视化设置', desc: '参数可视化调节，改动即时生效；内核配置包含通用、网络、NTP、Sniffer、Tunnel 与实验性页面。'},
-  {title: '托管模式', desc: '使用内置脚本生成代理组与规则，可配置地区分组、服务、路由与规则集。'},
-  {title: '节点库', desc: '导入单节点或注册 Cloudflare WARP 生成 WireGuard 落地节点，指定前置代理并注入配置。'},
-  {title: '全能工具箱', desc: '网速测试、路由追踪、DNS 查询、NAT 检测、iPerf3、流量统计与 Age 加解密等调试工具。'},
-  {title: '个性化定制', desc: '多套主题色彩，可自定义图标与标题，内置 30 种测速动效。'},
-  {title: '脚本 UI 适配', desc: '外置 JS 覆写脚本可声明可视化开关，自动渲染为可用界面。'},
-  {title: '专业编辑', desc: '内置高性能 Code-forge 编辑器，支持语法高亮与代码折叠。'},
-  {title: '小组件', desc: '首页卡片可自定义；Android 另有订阅 · 大号 / 宽条 / 方块三种原生桌面小组件。'},
-  {title: '应用内更新', desc: '自动检查更新、后台下载、SHA-256 校验与覆盖安装；便携版需手动更新。'},
-  {title: '版本可选', desc: '默认 Lite 精简版；带 -standard 后缀的完整版包含 Easytier、Tailscale、Zerotier 等组件。'},
-  {title: '零隐私风险', desc: '代码开源、无广告，CI/CD 全自动且公开可审计，README 声明无后台数据收集。'},
-  {title: '社区导向', desc: '认真对待社区反馈，与活跃用户社群共同进化，积极响应高质量 Issue。'},
+  {title: 'Mihomo 内核', desc: '以 Mihomo 为核心，提供规则分流、代理组与 TUN 模式，并持续跟进内核主线版本。'},
+  {title: '多平台覆盖', desc: '支持 Android 7.0+、Windows 8.1+、macOS 12.0+ 与 Linux Kernel 5.4+；桌面端原生 ARM64，Android TV 已完成大屏适配。'},
+  {title: '订阅与配置', desc: '可通过链接、剪贴板、二维码、文件、TV 扫码及代码导入订阅，配置载入前经过双重校验。'},
+  {title: '托管模式', desc: '由内置脚本生成代理组与规则，可设置地区分组、服务、路由及规则集，减少手动维护配置的工作。'},
+  {title: '节点库', desc: '支持导入单节点，或注册 Cloudflare WARP 生成 WireGuard 落地节点，并可指定前置代理后注入配置。'},
+  {title: '分应用代理', desc: '按应用选择代理范围，支持过滤系统应用与白名单、黑名单两种方式。'},
+  {title: 'DNS 与网络配置', desc: 'DNS 遵循订阅配置或托管脚本；内核配置提供通用、网络、NTP、Sniffer、Tunnel 与实验性设置页面。'},
+  {title: '网络调试工具', desc: '集成测速、路由追踪、IP 与 MRS 查询、DNS 查询、NAT 检测、iPerf3 及 Age 加解密等工具。'},
+  {title: '流量统计与 IP 风险', desc: '记录流量使用情况，并对订阅节点的 IP 风险给出提示，便于判断出口状态。'},
+  {title: '可视化设置', desc: '常用参数可在界面中直接调节并即时生效；外置 JS 覆写脚本亦可声明可视化开关。'},
+  {title: '代码编辑器', desc: '内置 Code-forge 编辑器，提供语法高亮与代码折叠，便于查看和修改配置文件。'},
+  {title: '卡片与小组件', desc: '首页卡片支持自定义排列；Android 另提供订阅 · 大号 / 宽条 / 方块三种原生桌面小组件。'},
+  {title: '智能启停', desc: '支持多平台智能启停与移动端 Doze 休眠适配，桌面端可通过托盘菜单快速切换代理组。'},
+  {title: '应用内更新', desc: '可自动检查并下载更新，具备 SHA-256 校验与断点续传；便携版需自行替换文件完成更新。'},
+  {title: '版本变体', desc: '默认提供 Lite 精简版；带 -standard 后缀的完整版包含 Easytier、Tailscale、Zerotier 等组件，另有面向旧设备的 Compatible 兼容版。'},
 ];
 
 const ICON_HUES = ['var(--pa-g1)', 'var(--pa-feat)', 'var(--pa-perf)', 'var(--pa-fix)', 'var(--pa-lilac)', 'var(--pa-rose)'];
@@ -444,7 +440,7 @@ function Hero({latest}) {
       <div className="pa-container">
         <a className={styles.eyebrow} href="#changelog">
           <span className={styles.pulse} aria-hidden="true" />
-          {version ? `最新版本 v${version} 已发布` : '正在获取最新版本…'}
+          {version ? `当前版本 v${version} 已发布` : '正在获取版本信息…'}
           <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
             <path
               d="M6 3.5 10.5 8 6 12.5"
@@ -474,8 +470,7 @@ function Hero({latest}) {
             </h1>
 
             <p className={styles.lede}>
-              基于 Mihomo 内核的多平台网络分流与 DNS 调试工具。Lite / Standard 按需选择，首页卡片与 Android 桌面小组件随手掌控运行状态 —
-              Another Better Network Toolbox.
+              Bettbox 以 Mihomo 为内核，提供跨平台的网络分流与 DNS 调试能力。软件支持 Android、Windows、macOS 与 Linux，具备托管分流模式、节点库与多类网络调试工具，面向长期稳定运行，且不收集使用数据。
             </p>
 
             <div className={styles.cta}>
@@ -503,7 +498,7 @@ function Hero({latest}) {
                 前往 GitHub Releases
               </a>
             </div>
-            <p className={styles.ctaNote}>开源、无广告 · GPL-3.0 · Windows 端已装载 OV 数字签名</p>
+            <p className={styles.ctaNote}>开源、无广告 · GPL-3.0 协议 · Windows 版由 SignPath 提供 OV 代码签名</p>
           </div>
 
           <AppMock />
@@ -512,19 +507,19 @@ function Hero({latest}) {
         <ul className={styles.facts}>
           <li style={{'--hue': 'var(--pa-g1)'}}>
             <b>Mihomo 内核</b>
-            <span>规则分流、代理组与 TUN 模式完整支持，紧跟主线更新。</span>
+            <span>以 Mihomo 为核心，支持规则分流、代理组与 TUN 模式，跟随主线持续更新。</span>
           </li>
           <li style={{'--hue': 'var(--pa-feat)'}}>
-            <b>订阅导入</b>
-            <span>订阅链接一键导入，内置双重配置检测验证与容错。</span>
+            <b>订阅与配置</b>
+            <span>支持多种订阅导入方式，配置载入前经双重校验，并提供托管模式简化维护。</span>
           </li>
           <li style={{'--hue': 'var(--pa-perf)'}}>
-            <b>智能启停</b>
-            <span>多平台无感智能启停与休眠支持，后台省电长期稳定。</span>
+            <b>后台运行</b>
+            <span>适配多平台智能启停与移动端休眠机制，降低长期运行的资源占用。</span>
           </li>
           <li style={{'--hue': 'var(--pa-fix)'}}>
-            <b>开源安全</b>
-            <span>GPL-3.0 · 全透明 CI/CD · 通过 SignPath 安全审计。</span>
+            <b>开源与签名</b>
+            <span>采用 GPL-3.0 协议，构建流程公开可审计；Windows 版使用 SignPath 提供的 OV 代码签名证书。</span>
           </li>
         </ul>
       </div>
@@ -541,8 +536,8 @@ function Features() {
             <span className={styles.cap} aria-hidden="true" />
             01
           </p>
-          <h2>核心特性</h2>
-          <p className={styles.sectionSub}>前台流畅、后台省电，以少量资源消耗长期稳定运行</p>
+          <h2>功能概览</h2>
+          <p className={styles.sectionSub}>涵盖连接、配置、调试与个性化，各平台功能保持一致</p>
         </Reveal>
         <div className={styles.featureGrid}>
           {FEATURES.map((f, i) => (
@@ -619,7 +614,7 @@ function DownloadSection({latest, loading}) {
                 : '前往 GitHub 获取最新版本'}
             </p>
             <p className={styles.railText}>
-              已自动为当前设备选择平台。每个文件都注明了适用设备，旧 CPU 设备请选择 Compatible 兼容版。
+              页面已按当前设备预选平台，各安装包均标注适用范围。较旧的处理器请选用 Compatible 兼容版。
             </p>
             <p className={styles.railLinks}>
               <a href={LATEST_URL} target="_blank" rel="noreferrer">
@@ -698,19 +693,19 @@ function DownloadSection({latest, loading}) {
                     <CopyButton text="yay -S bettbox-bin" />
                   </div>
                   <p>
-                    旧 CPU 兼容包：<code>bettbox-compatible-bin</code>；鸿蒙 NEXT 可配合
+                    旧 CPU 兼容包：<code>bettbox-compatible-bin</code>；鸿蒙 NEXT 可借助
                     <a href="https://harmonyos.cool/android-app" target="_blank" rel="noreferrer">
                       卓易通
                     </a>
-                    稳定使用。
+                    安装使用。
                   </p>
                 </div>
                 <div className={styles.tip}>
-                  <h3>macOS 安装提示</h3>
+                  <h3>macOS 安装说明</h3>
                   <p>
-                    下载对应架构的 DMG 后拖入「应用程序」；首次打开建议
-                    <strong>右键图标选择「打开」</strong>
-                    以避开安全拦截；首次开启 TUN 时请输入用户密码完成授权。
+                    下载与芯片架构对应的 DMG 后，将图标拖入「应用程序」。若系统阻止运行，可在「访达 - 应用程序」中
+                    <strong>右键点击图标并选择「打开」</strong>
+                    ；首次开启 TUN 时，按系统提示输入密码完成授权。
                   </p>
                 </div>
               </div>
@@ -766,7 +761,7 @@ function ChangelogSection({releases, loading}) {
               03
             </p>
             <h2>更新日志</h2>
-            <p className={styles.sectionSub}>跟着 Mihomo 主线持续演进，每一次更新都清晰可查</p>
+            <p className={styles.sectionSub}>变更内容按版本整理，可按版本号或关键字检索</p>
             <label className={styles.search}>
               <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
                 <circle cx="9" cy="9" r="5.75" fill="none" stroke="currentColor" strokeWidth="1.6" />
@@ -868,7 +863,7 @@ function Community() {
   const cards = [
     {
       title: 'Telegram 交流群',
-      desc: '使用问题、经验交流与第一时间的社区讨论。',
+      desc: '交流使用问题与配置经验，参与社区讨论。',
       href: 'https://t.me/bettbox_chat',
       cta: '加入交流',
       hue: 'var(--pa-slate)',
@@ -889,7 +884,7 @@ function Community() {
     },
     {
       title: 'GitHub Issues',
-      desc: '高质量 Issue 优先处理，反馈不会无故被淹没。',
+      desc: '提交缺陷报告与功能建议，便于集中跟踪和答复。',
       href: 'https://github.com/appshubcc/Bettbox/issues',
       cta: '提交反馈',
       hue: 'var(--pa-g1)',
@@ -897,7 +892,7 @@ function Community() {
     },
     {
       title: '赞助支持',
-      desc: '觉得项目有帮助，可以通过推荐链接或赞助支持开发。',
+      desc: '通过推荐链接或直接赞助，支持项目持续开发。',
       href: 'https://github.com/appshubcc/Bettbox#-%E8%B5%9E%E5%8A%A9%E6%94%AF%E6%8C%81',
       cta: '了解方式',
       hue: 'var(--pa-clay)',
@@ -914,7 +909,7 @@ function Community() {
             04
           </p>
           <h2>社区与反馈</h2>
-          <p className={styles.sectionSub}>开源、透明、社区导向 — 加入我们，一起变得更好</p>
+          <p className={styles.sectionSub}>开源项目，问题讨论、版本公告与反馈渠道如下</p>
         </Reveal>
         <div className={styles.communityGrid}>
           {cards.map((c, i) => (
@@ -957,9 +952,9 @@ function CtaBand({version}) {
     <section className={styles.ctaBand}>
       <div className="pa-container">
         <Reveal className={styles.ctaBandInner} scale>
-          <h2>更好的体验，开箱可用</h2>
+          <h2>为长期稳定运行而生</h2>
           <p>
-            {version ? `最新版本 v${version.replace(/^v/, '')}` : '最新版本'} 已在全平台发布，立即下载体验。
+            {version ? `当前版本 v${version.replace(/^v/, '')}` : '最新版本'} 已在各平台发布，可前往下载或查阅文档。
           </p>
           <div className={styles.cta}>
             <a className={styles.btnPrimary} href={LATEST_URL} target="_blank" rel="noreferrer">
@@ -992,7 +987,6 @@ function CtaBand({version}) {
 /* ================= 页面 ================= */
 
 export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
   const [releases, setReleases] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -1035,7 +1029,7 @@ export default function Home() {
 
   return (
     <Layout
-      title={`${siteConfig.title} — Another Better Network Toolbox`}
+      title="Bettbox 文档 — Another Better Network Toolbox"
       description="Bettbox 是基于 Mihomo 内核的多平台网络分流与 DNS 调试工具，支持 Android 7.0+、Windows 8.1+、macOS 12.0+ 与 Linux Kernel 5.4+。提供托管模式、节点库与丰富调试工具。">
       <Hero latest={latest} />
       <main>

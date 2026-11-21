@@ -7,15 +7,15 @@ tags:
   - mihomo
 ---
 
-本文只讲**机制与在 Bettbox 中的落点**，不对项目历史或第三方争议做未经验证的叙述。所有结论都能在 Bettbox 源码中找到对应实现。
+本文只讲**机制与在 Bettbox 中的落点**，不对项目历史或第三方争议做未经验证的叙述。
 
 ---
 
 ## Age Key 解决什么
 
-Age Key 用于**加密订阅文件**：内容由公钥加密，只有持有对应私钥的客户端才能解密。Mihomo 的配置示例 `core/Clash.Meta/docs/config.yaml` 中提供了 `age-secret-key` 字段，注释说明该字段会尝试用私钥解密 age armor 格式加密的配置文件。
+Age Key 用于**加密订阅文件**：内容由公钥加密，只有持有对应私钥的客户端才能解密。Mihomo 配置提供 `age-secret-key` 字段，用于尝试用私钥解密 age armor 格式加密的配置文件。
 
-源码 `core/Clash.Meta/component/age/age.go` 使用 `github.com/metacubex/age` 与 `armor` 包，支持：
+内核的 age 组件使用 `github.com/metacubex/age` 与 `armor` 包，支持：
 
 - `age.X25519Identity` / `age.X25519Recipient`
 - `age.HybridIdentity` / 混合 recipient（后量子场景）
@@ -30,15 +30,15 @@ Age Key 用于**加密订阅文件**：内容由公钥加密，只有持有对�
 
 ### 方式一：服务商加密订阅，用户提供私钥
 
-服务商用公钥加密订阅文件；用户导入 URL 后，在配置中填入服务商提供的私钥。`core/profile_import.go`、`core/hub.go` 中会调用 `age.DecryptBytes` 处理加密内容。
+服务商用公钥加密订阅文件；用户导入 URL 后，在配置中填入服务商提供的私钥。订阅导入与配置加载时会调用 `age.DecryptBytes` 处理加密内容。
 
 ### 方式二：用户自己生成密钥对
 
-用户生成密钥对，把公钥交给服务商配置加密；自己保留私钥并填入客户端。Bettbox 配置编辑页右上角的钥匙按钮可生成 X25519 密钥对，并从私钥反推公钥（`lib/views/profiles/edit_profile.dart`）。
+用户生成密钥对，把公钥交给服务商配置加密；自己保留私钥并填入客户端。Bettbox 配置编辑页右上角的钥匙按钮可生成 X25519 密钥对，并从私钥反推公钥。
 
 ### 方式三：在 Provider 请求头中带公钥
 
-`core/Clash.Meta/docs/config.yaml` 演示了在 `proxy-providers` 的 `header` 中携带 `X-Age-Public-Key` 的写法：客户端在请求订阅时主动声明公钥，服务端据此下发用该公钥加密的内容。这种方式适合自己编写配置并添加 Providers 的场景。
+可在 `proxy-providers` 的 `header` 中携带 `X-Age-Public-Key`：客户端在请求订阅时主动声明公钥，服务端据此下发用该公钥加密的内容。这种方式适合自己编写配置并添加 Providers 的场景。
 
 ---
 
@@ -58,7 +58,7 @@ Age Key 用于**加密订阅文件**：内容由公钥加密，只有持有对�
 
 ### 工具箱
 
-「更多 → 工具箱 → Age 加解密」对应 `lib/pages/toolbox/age_tool.dart` 与 `core/toolbox/age_tool.go`：
+「更多 → 工具箱 → Age 加解密」提供：
 
 | 标签页 | 功能 |
 | :--- | :--- |
@@ -72,12 +72,12 @@ Age Key 用于**加密订阅文件**：内容由公钥加密，只有持有对�
 
 ## 与 AES-256 的区别
 
-Bettbox 中 AES-256 的用途是**备份文件密码加密**，中文文案 `backupPasswordDesc` 写明「使用 AES-256 加密备份，留空则不加密」。它与订阅内容的 Age 加密是两回事：
+Bettbox 中 AES-256 的用途是**备份文件密码加密**，界面说明为「使用 AES-256 加密备份，留空则不加密」。它与订阅内容的 Age 加密是两回事：
 
-| 用途 | 算法 | 位置 |
+| 用途 | 算法 | 设置位置 |
 | :--- | :--- | :--- |
-| 订阅内容加密 | Age（X25519 / 混合） | `core/Clash.Meta/component/age/`、`core/profile_import.go` |
-| 备份文件加密 | AES-256 | 备份与恢复设置（`backupPasswordDesc`） |
+| 订阅内容加密 | Age（X25519 / 混合） | 配置导入的密钥设置 |
+| 备份文件加密 | AES-256 | 备份与恢复设置 |
 
 ---
 
@@ -86,7 +86,3 @@ Bettbox 中 AES-256 的用途是**备份文件密码加密**，中文文案 `bac
 - [配置与订阅](/docs/guide/config#3-age-加密订阅)
 - [工具箱](/docs/guide/toolbox#2-age-加解密)
 - [常见问题](/docs/faq#订阅与配置)
-
-:::note 本文源码依据
-`core/Clash.Meta/docs/config.yaml`、`core/Clash.Meta/component/age/age.go`、`core/profile_import.go`、`core/hub.go`、`core/provider_expand.go`、`core/toolbox/age_tool.go`、`lib/views/profiles/edit_profile.dart`、`lib/pages/toolbox/age_tool.dart`、`lib/views/backup_and_recovery.dart`、`arb/intl_zh_CN.arb`。
-:::

@@ -10,7 +10,7 @@ sidebar_position: 5
 
 ## 1. 入口与适用范围
 
-- 入口：**更多 → 设置 → 分应用代理**（`lib/views/tools.dart` 的「设置」分组；功能页为 `lib/views/access.dart`）。
+- 入口：**更多 → 设置 → 分应用代理**。
 - 它作用于 **VPN / TUN 接管范围**，与配置文件里的 `rules` 分流规则是两层不同机制。
 - 修改后界面提示 `restartTip`：「重启 TUN 后生效」或 `vpnTip`：「重启 VPN 后生效」。
 
@@ -18,7 +18,7 @@ sidebar_position: 5
 
 ## 2. 两种模式
 
-`lib/enum/enum.dart` 的 `AccessControlMode` 只有两个值：
+分应用代理只有两种模式：
 
 | 枚举值 | 中文名 | 行为 |
 | :--- | :--- | :--- |
@@ -34,7 +34,7 @@ sidebar_position: 5
 
 ## 3. 操作方式
 
-`lib/views/access.dart` 提供的操作：
+页面提供的操作：
 
 - 搜索并选择应用；
 - **过滤系统应用** / 取消过滤（`filterSystemApp`）；
@@ -53,7 +53,3 @@ sidebar_position: 5
 - 部分 App 依赖多个进程，分流不生效时需检查对应条目。
 - 修改后如未立即生效，按界面提示重启 TUN 或 VPN 服务。
 - 页面内可复制整份配置，换机时可用粘贴恢复，避免逐项重选。
-
-:::note 本文源码依据
-`lib/views/access.dart`、`lib/views/tools.dart`、`lib/enum/enum.dart`（`AccessControlMode`）、`arb/intl_zh_CN.arb`。
-:::

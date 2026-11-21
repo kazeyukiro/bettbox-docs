@@ -4,14 +4,12 @@ sidebar_position: 10
 
 # 常见问题
 
-以下答案均来自源码、README 或 Release 说明；没有源码依据的通用说法已删除。
-
 ---
 
 ## 安装与兼容
 
 **Q：Android 最低版本是多少？**  
-A：**Android 7.0+**。`README.md` 标注 Android 7.0+，`android/app/build.gradle.kts` 中 `minSdk = 24`；v1.19.9 发布说明写明由 8.0 下调至 7.0。
+A：**Android 7.0+**（v1.19.9 起由 8.0 下调）。
 
 **Q：macOS 最低版本？**  
 A：**macOS 12.0+**，Xcode 工程多处 `MACOSX_DEPLOYMENT_TARGET = 12.0`。
@@ -23,10 +21,10 @@ A：带 **`-standard`** 后缀的包。v1.19.9 明确提示默认包改为 Lite�
 A：尝试 **Compatible** 兼容版（Windows / Linux amd64）。代码中标准包 `GOAMD64=v3`，兼容版 `v1`。
 
 **Q：从哪里下载？**  
-A：[GitHub Releases](https://github.com/appshubcc/Bettbox/releases/latest)。README 只给出此下载源。
+A：[GitHub Releases](https://github.com/appshubcc/Bettbox/releases/latest)。
 
 **Q：Windows 签名情况？**  
-A：README 写明通过 SignPath 开源基金会人工审核溯源，Windows 版使用 OV 代码签名证书；但 v1.19.6 Release 说明曾提到因 Google 账号原因临时禁用签名流程。以实际安装包签名状态为准。
+A：项目通过 SignPath 开源基金会人工审核溯源，Windows 版使用 OV 代码签名证书；v1.19.6 期间曾因 Google 账号原因临时禁用签名流程，以实际安装包签名状态为准。
 
 ---
 
@@ -85,7 +83,3 @@ A：「更多 → 关于 → 检查更新」，或在「更多 → 设置 → �
 ## 反馈
 
 提交 Issue 请附**复现步骤、版本与系统信息、Debug 日志**：[GitHub Issues](https://github.com/appshubcc/Bettbox/issues)。社区渠道见[交流与反馈](/docs/contact)。
-
-:::note 本文源码依据
-`README.md`、`android/app/build.gradle.kts`、`macos/Runner.xcodeproj/project.pbxproj`、`lib/views/backup_and_recovery.dart`、`lib/views/access.dart`、`lib/views/tools.dart`、`lib/common/updater.dart`、`arb/intl_zh_CN.arb`、v1.19.6 / v1.19.8 / v1.19.9 Release 说明。
-:::

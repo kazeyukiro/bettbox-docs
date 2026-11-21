@@ -4,8 +4,6 @@ sidebar_position: 12
 
 # 交流与反馈
 
-以下链接均取自 Bettbox 官方 README 或 Release 说明。
-
 ---
 
 ## 官方社区
@@ -19,14 +17,14 @@ sidebar_position: 12
 | 文档仓库 | [kazeyukiro/bettbox-docs](https://github.com/kazeyukiro/bettbox-docs) | 本站点文档 |
 
 :::note 群链接变化
-v1.19.7 及更早的 Release 模板中交流群为 `t.me/appshub_chat`；v1.19.8 / v1.19.9 与当前 README 已改为 **t.me/bettbox_chat**。
+当前交流群为 **t.me/bettbox_chat**，早期版本曾使用 `t.me/appshub_chat`。
 :::
 
 ---
 
 ## 反馈建议
 
-Release 模板写明：书写认真、信息完整（包含必要的复现步骤和日志）的 Issue 会被优先处理。
+书写认真、信息完整（包含必要的复现步骤和日志）的 Issue 会被优先处理。
 
 提交前建议准备：
 
@@ -35,8 +33,4 @@ Release 模板写明：书写认真、信息完整（包含必要的复现步骤
 - 复现步骤
 - Debug 日志（应用内「日志」页面可查看）
 
-订阅类问题请先向服务商核对订阅链接与节点格式，再判断是否为客户端问题。README 的常见问题中也建议：导入失败时优先在服务商后台重置订阅链接后重试。
-
-:::note 本文源码依据
-`README.md`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明中的社区链接与反馈提示。
-:::
+订阅类问题请先向服务商核对订阅链接与节点格式，再判断是否为客户端问题。导入失败时，建议先在服务商后台重置订阅链接后重试。

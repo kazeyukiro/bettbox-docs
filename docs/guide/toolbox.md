@@ -10,7 +10,7 @@ sidebar_position: 7
 
 ## 1. 内置工具
 
-`lib/views/toolbox.dart` 中定义的工具及其说明（`arb/intl_zh_CN.arb`）：
+工具箱包含以下工具：
 
 | 工具 | 界面说明 | 用途 |
 | :--- | :--- | :--- |
@@ -40,7 +40,7 @@ sidebar_position: 7
 
 ## 2. Age 加解密
 
-源码：`lib/pages/toolbox/age_tool.dart` 与 `core/toolbox/age_tool.go`。
+Age 加解密由内置 age 工具实现。
 
 - 支持 X25519 密钥对与后量子混合类型 `MLKEM768-X25519`（`hybrid`）。
 - 可从已有私钥生成公钥；密钥相关操作在标签页「密钥」中完成。
@@ -55,7 +55,7 @@ sidebar_position: 7
 
 ## 3. 流量统计
 
-v1.19.8 新增，源码 `lib/pages/toolbox/traffic_stats.dart`。
+v1.19.8 新增。
 
 - 默认开关为「启用流量统计」（`trafficStatsEnable`）。
 - 开启「记录明细」后记录域名、进程、节点和规则的去向；关闭后只记录总量（`trafficStatsDetailDesc`）。
@@ -88,7 +88,3 @@ v1.19.8 在工具箱与首页「网络检测」中加入专业 IP 风险数值�
 ## 6. 外部资源
 
 测速、规则与 GEO 判定依赖内置数据。可在 **更多 → 外部资源** 查看 GeoSite、MMDB、ASN、MRS 四项资源的状态与更新时间，详见[配置与订阅](/docs/guide/config#7-外部资源)。
-
-:::note 本文源码依据
-`lib/views/toolbox.dart`、`lib/pages/toolbox/age_tool.dart`、`lib/pages/toolbox/traffic_stats.dart`、`lib/pages/toolbox/iperf.dart`、`lib/pages/toolbox/dns_query.dart`、`lib/pages/toolbox/local_ping.dart`、`lib/pages/toolbox/nat_test.dart`、`lib/enum/enum.dart`、`core/toolbox/age_tool.go`、`arb/intl_zh_CN.arb`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明。
-:::

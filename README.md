@@ -2,20 +2,6 @@
 
 [Bettbox](https://github.com/appshubcc/Bettbox) 的中文文档站点，使用 [Docusaurus](https://docusaurus.io/) 构建。
 
-## 文档依据
-
-内容按 **2026-11-21 的 Bettbox `main` 分支源码**重写，对应 `pubspec.yaml` 版本 `1.19.9+2026112101`。事实来源包括：
-
-- `README.md` 与各语言 README
-- `pubspec.yaml`、`setup.dart`、`.github/workflows/build.yaml`
-- `lib/`：导航、设置、界面与网络工具实现
-- `arb/intl_zh_CN.arb`：简体中文界面文案
-- `core/Clash.Meta/`：Mihomo 内核配置示例与 Age 实现
-- `android/`、`macos/` 等平台工程配置
-- GitHub Release 说明
-
-没有源码依据的说法不写入文档；版本差异会注明来自哪次 Release。
-
 ## 目录
 
 | 路径 | 内容 |

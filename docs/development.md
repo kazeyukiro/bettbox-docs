@@ -4,7 +4,7 @@ sidebar_position: 9
 
 # 从源码构建
 
-本页整理自 [Bettbox 源码仓库](https://github.com/appshubcc/Bettbox)的 README、`setup.dart` 与 `.github/workflows/build.yaml`。普通用户请直接使用 [Releases](https://github.com/appshubcc/Bettbox/releases/latest) 安装包。
+本页面向希望自行编译的开发者。普通用户请直接使用 [Releases](https://github.com/appshubcc/Bettbox/releases/latest) 安装包。
 
 ---
 
@@ -27,9 +27,9 @@ sidebar_position: 9
 
 ## 2. 依赖环境
 
-README 以 Windows 为例：Windows 10 及以上，依赖 Git、Visual Studio、Flutter 3.47.x、Golang、Inno Setup、Rust。
+以 Windows 为例：Windows 10 及以上，依赖 Git、Visual Studio、Flutter、Golang、Inno Setup、Rust。
 
-**注意**：v1.19.9 Release 说明已升级到 Flutter 3.50.x；CI 中固定为 **Flutter 3.50.1**（ARM runner 使用 `master` channel），Go 为 **1.25.x**（Compatible 构建用 1.24.x）。构建时以 CI 版本为准。
+**注意**：Flutter 已升级到 3.50.x；构建流程固定为 **Flutter 3.50.1**（ARM runner 使用 `master` channel），Go 为 **1.25.x**（兼容版构建用 1.24.x）。构建时以 CI 配置为准。
 
 | 平台 | CI 关键依赖 |
 | :--- | :--- |
@@ -57,7 +57,7 @@ dart setup.dart windows --arch amd64 --out app --compatible
 dart setup.dart windows --arch amd64 --out app --standard
 ```
 
-README 在 Windows 下使用 `dart .\setup.dart ...` 的路径写法，效果相同。构建产物位于 `dist/`，内核中间产物输出到 `libclash/`（`Build.outDir`）。
+在 Windows 下也可使用 `dart .\setup.dart ...` 的路径写法，效果相同。构建产物位于 `dist/`，内核中间产物输出到 `libclash/`。
 
 ### `setup.dart` 参数
 
@@ -75,14 +75,14 @@ README 在 Windows 下使用 `dart .\setup.dart ...` 的路径写法，效果相
 | `--core-version` | 注入内核版本字符串 |
 
 :::note 帮助文本与实现差异
-`setup.dart` 中 `--compatible` 的 help 文本写的是 `GOAMD64=v2`，但实际构建代码为 `compatible ? 'v1' : 'v3'`。以代码为准。
+兼容版实际以 `GOAMD64=v1` 编译，标准版为 `v3`。
 :::
 
 ---
 
 ## 4. 官方构建矩阵
 
-`.github/workflows/build.yaml` 的 `matrix.include` 定义：
+构建矩阵定义如下：
 
 | 平台 | 架构 | Standard | Compatible |
 | :--- | :--- | :--- | :--- |
@@ -97,7 +97,7 @@ Windows 构建还会先产出内核与 HelperService，经 SignPath 签名后再
 
 ## 5. 内置数据下载
 
-`setup.dart` 会从以下地址下载并内置：
+构建脚本会从以下地址下载并内置：
 
 | 文件 | 来源 |
 | :--- | :--- |
@@ -114,7 +114,3 @@ Windows 构建还会先产出内核与 HelperService，经 SignPath 签名后再
 ## 6. 开源协议
 
 项目采用 [GPL-3.0](https://github.com/appshubcc/Bettbox/blob/main/LICENSE) 协议。二次开发与分发请遵守协议要求。
-
-:::note 本文源码依据
-`README.md`、`setup.dart`、`.github/workflows/build.yaml`、`pubspec.yaml`、v1.19.9 Release 说明、`LICENSE`。
-:::

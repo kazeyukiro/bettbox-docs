@@ -4,13 +4,13 @@ sidebar_position: 6
 
 # 首页与小组件
 
-本页区分两类能力：**App 内首页卡片**与 **Android 系统桌面小组件**。源码中它们是两套独立实现。
+本页区分两类能力：**App 内首页卡片**与 **Android 系统桌面小组件**。二者是两套独立实现。
 
 ---
 
 ## 1. 首页卡片（Dashboard）
 
-`lib/enum/enum.dart` 的 `DashboardWidget` 枚举定义了可添加到首页的卡片：
+可添加到首页的卡片包括：
 
 | 类别 | 卡片（枚举值） |
 | :--- | :--- |
@@ -31,9 +31,9 @@ sidebar_position: 6
 
 ## 2. Android 系统桌面小组件
 
-**v1.19.8 新增 Android 原生桌面小组件**（Release 说明）。这与首页卡片不是同一个东西。
+**v1.19.8 新增 Android 原生桌面小组件**。这与首页卡片不是同一个东西。
 
-源码位置：
+实现涉及：
 
 - 接收器：`android/app/src/main/AndroidManifest.xml` 注册 `HomeWidgetLargeProvider`、`HomeWidgetWideProvider`、`HomeWidgetSquareProvider`
 - Kotlin 实现：`android/app/src/main/kotlin/com/appshub/bettbox/widget/`
@@ -90,7 +90,7 @@ sidebar_position: 6
 
 ## 5. 覆写脚本的图形界面适配
 
-README 说明外置 JS 覆写脚本可适配图形化 UI。最简声明：
+外置 JS 覆写脚本可适配图形化 UI。最简声明：
 
 ```js
 const Compatible_With_Bettbox = { ruleOptionsEnable: true };
@@ -108,8 +108,4 @@ const Compatible_With_Bettbox = {
 
 未声明 `policyGroupOptions` 或名称不匹配时，所有开关平铺展示。
 
-脚本管理入口：**更多 → 覆写脚本**（`lib/views/profiles/scripts.dart`），支持导入 URL、编辑、导出、同步与删除，并可管理内置「托管模式」脚本（见[托管模式](/docs/guide/managed)）。
-
-:::note 本文源码依据
-`lib/enum/enum.dart`（`DashboardWidget`、`DashboardTileSize`、`DelayAnimationType`）、`lib/views/dashboard/`、`lib/views/tools.dart`、`lib/views/theme.dart`、`lib/views/profiles/scripts.dart`、`lib/manager/android_manager.dart`、`android/app/src/main/AndroidManifest.xml`、`android/app/src/main/kotlin/com/appshub/bettbox/widget/`、`android/app/src/main/res/xml/home_widget_*_info.xml`、`README.md`、v1.19.5 / v1.19.7 / v1.19.8 / v1.19.9 Release 说明。
-:::
+脚本管理入口：**更多 → 覆写脚本**，支持导入 URL、编辑、导出、同步与删除，并可管理内置「托管模式」脚本（见[托管模式](/docs/guide/managed)）。

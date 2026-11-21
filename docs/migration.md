@@ -4,23 +4,23 @@ sidebar_position: 11
 
 # 从 FlClash 迁移
 
-README 致谢中明确写明：**Bettbox 起源于 [FlClash](https://github.com/chen08209/FlClash)**。两者都基于 Mihomo，配置格式一致。
+**Bettbox 起源于 [FlClash](https://github.com/chen08209/FlClash)**。两者都基于 Mihomo，配置格式一致。
 
 ---
 
 ## 1. 可以保留什么
 
-| 内容 | 说明 | 依据 |
-| :--- | :--- | :--- |
-| 订阅链接 | 可直接重新导入 | `lib/views/profiles/add_profile.dart` |
-| Clash / Mihomo YAML 配置 | 使用同一内核配置格式 | `core/Clash.Meta/` |
-| `flclash://install-config` 链接 | Android manifest 仍注册该 scheme | `AndroidManifest.xml` |
-| 节点分享链接 | 节点库支持 URI / Base64 / YAML | `lib/views/profiles/nodes.dart` |
+| 内容 | 说明 |
+| :--- | :--- |
+| 订阅链接 | 可直接重新导入 |
+| Clash / Mihomo YAML 配置 | 使用同一内核配置格式 |
+| `flclash://install-config` 链接 | Android 端仍注册该 scheme |
+| 节点分享链接 | 节点库支持 URI / Base64 / YAML |
 
-源码注册的 install-config scheme 共四个：`clash`、`clashmeta`、`flclash`、`bettbox`。
+安装配置 scheme 共四个：`clash`、`clashmeta`、`flclash`、`bettbox`。
 
 :::caution 兼容性边界
-README 只说明项目起源于 FlClash，并未承诺「100% 兼容」。涉及自定义覆写脚本或平台专属选项的配置，建议导入后逐项核验。
+项目并未承诺与 FlClash「100% 兼容」。涉及自定义覆写脚本或平台专属选项的配置，建议导入后逐项核验。
 :::
 
 ---
@@ -42,7 +42,7 @@ Bettbox 与 FlClash 都通过系统 VPN / TUN 接管流量，建议同一时间�
 
 ## 3. 迁移后可用的增强能力
 
-按 Release 说明与源码：
+主要变化如下：
 
 - **托管模式**：内置脚本生成代理组与规则（v1.19.8，见[托管模式](/docs/guide/managed)）
 - **订阅合并**：多个订阅统一管理（v1.19.8）
@@ -63,7 +63,3 @@ A：到 **更多 → 外部资源** 检查 GeoSite / MMDB / ASN / MRS 状态；�
 
 **Q：配置里的 DNS 选项不见了？**  
 A：当前版本已移除应用侧 DNS 覆写页面，DNS 遵循配置文件或托管脚本，详见[节点与代理组](/docs/guide/proxies#5-dns-设置的变化)。
-
-:::note 本文源码依据
-`README.md`、`android/app/build.gradle.kts`、`android/app/src/main/AndroidManifest.xml`、`lib/views/profiles/`、`lib/views/access.dart`、`arb/intl_zh_CN.arb`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明。
-:::

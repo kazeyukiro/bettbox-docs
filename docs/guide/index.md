@@ -4,13 +4,13 @@ sidebar_position: 1
 
 # 功能指南总览
 
-Bettbox 的界面由**导航页面 + 设置分组 + 首页卡片 + 工具箱**组成。本页是功能地图，具体规则以源码中的导航定义与中文语言包为准。
+Bettbox 的界面由**导航页面 + 设置分组 + 首页卡片 + 工具箱**组成。本页是功能地图。
 
 ---
 
 ## 导航结构
 
-源码 `lib/common/navigation.dart` 定义 `Navigation.getItems()`，`PageLabel` 枚举列出所有页面。各页面的显示位置由 `modes` 决定：
+各页面按平台出现在不同位置：
 
 | 页面（`PageLabel`） | 中文名 | 出现位置 |
 | :--- | :--- | :--- |
@@ -25,14 +25,14 @@ Bettbox 的界面由**导航页面 + 设置分组 + 首页卡片 + 工具箱**�
 | `tools` | 更多 | 移动端 / 桌面端 |
 
 :::tip 找不到设置项
-「更多」页面提供设置项搜索（`lib/views/tools.dart` 中的 `_query` / `_cachedSearchItems`），可直接输入名称定位；桌面的侧边栏悬浮快捷入口也可配置。
+「更多」页面提供设置项搜索，可直接输入名称定位；桌面的侧边栏悬浮快捷入口也可配置。
 :::
 
 ---
 
 ## 设置分组
 
-`lib/views/tools.dart` 中，「更多 → 设置」下的主要分组与入口包括：
+「更多 → 设置」下的主要分组与入口包括：
 
 | 分组 | 中文名 | 主要内容 |
 | :--- | :--- | :--- |
@@ -49,7 +49,7 @@ Bettbox 的界面由**导航页面 + 设置分组 + 首页卡片 + 工具箱**�
 
 ### 内核配置子页
 
-`lib/views/config/config.dart` 中「内核配置」包含六个子页：
+「内核配置」包含六个子页：
 
 1. 通用
 2. 网络
@@ -59,7 +59,7 @@ Bettbox 的界面由**导航页面 + 设置分组 + 首页卡片 + 工具箱**�
 6. 实验性
 
 :::caution DNS 覆写页面已移除
-v1.19.8 Release 说明写明「完整移除原 DNS 覆写页面选项」；v1.19.9 进一步写明「完整移除应用侧默认 DNS 配置覆写与覆写规则集自动注入，完全遵循配置文件或托管脚本的 DNS 设置」。因此内核配置中**不再有独立的 DNS 覆写页**。DNS 由配置文件或[托管模式](/docs/guide/managed)脚本决定。
+v1.19.8 移除原 DNS 覆写页面选项；v1.19.9 进一步移除应用侧默认 DNS 配置覆写与规则集自动注入，DNS 完全遵循配置文件或托管脚本。因此内核配置中**不再有独立的 DNS 覆写页**，DNS 由配置文件或[托管模式](/docs/guide/managed)脚本决定。
 :::
 
 ---
@@ -78,12 +78,8 @@ v1.19.8 Release 说明写明「完整移除原 DNS 覆写页面选项」；v1.19
 
 ---
 
-## 能力来源
+## 组件与协议
 
-- **内核**：`core/Clash.Meta/` 内置 Mihomo；出站实现包含 Shadowsocks、ShadowsocksR、VMess、VLESS、Trojan、Hysteria、Hysteria2、TUIC、WireGuard、SSH、AnyTLS、Mieru、Snell、HTTP、SOCKS5、ShadowTLS、Masque、TrustTunnel、Sudoku、OpenVPN、EasyTier、Tailscale、Zerotier 等文件（部分仅 Standard 变体包含）。
-- **编辑器**：`plugins/code_forge`，README 称其为高性能 Code-forge 编辑器。
-- **图标**：v1.19.9 Release 说明引入 Phosphor 图标包，Android 端默认开启。
-
-:::note 本文源码依据
-`lib/common/navigation.dart`、`lib/enum/enum.dart`（`PageLabel`、`RuleAction`）、`lib/views/tools.dart`、`lib/views/config/config.dart`、`README.md`、v1.19.7 / v1.19.8 / v1.19.9 Release 说明、`core/Clash.Meta/adapter/outbound/`。
-:::
+- **内核**：内置 Mihomo，支持 Shadowsocks、ShadowsocksR、VMess、VLESS、Trojan、Hysteria、Hysteria2、TUIC、WireGuard、SSH、AnyTLS、Mieru、Snell、HTTP、SOCKS5、ShadowTLS、Masque、TrustTunnel、Sudoku、OpenVPN、EasyTier、Tailscale、Zerotier 等协议（部分仅 Standard 变体包含）。
+- **编辑器**：内置高性能 Code-forge 编辑器。
+- **图标**：v1.19.9 引入 Phosphor 图标包，Android 端默认开启。
